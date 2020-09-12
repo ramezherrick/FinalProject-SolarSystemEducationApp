@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "ListRoles";
+}
+
+<h1>ListRoles</h1>
+
+@foreach(var r in Model)
+{
+    <h2>@r.Id</h2>
+    <h2>@r.Name</h2>
+    <a href="../Administration/DeleteRole?id=@r.Id">Edit role</a>
+}
