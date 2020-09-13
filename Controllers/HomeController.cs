@@ -38,6 +38,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 //get all roles associated with current user
                 var role = await _userManager.GetRolesAsync(user);
 
+                if(role.Count==0)
+                {
+                    return RedirectToAction("AssignAsStudent", "Administration");
+                }
+
                 for (int i = 0; i < role.Count; i++)
                 {
                     if (role[i].ToLower().Contains("teacher"))
