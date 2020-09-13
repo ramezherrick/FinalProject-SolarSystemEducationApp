@@ -11,7 +11,5 @@ namespace FinalProject_SolarSystemEducationApp.Models
         public string Id { get; set; }
         [Required]
         public string RoleName { get; set; }
-
-
     }
 }
