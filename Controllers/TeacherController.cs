@@ -141,5 +141,24 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return RedirectToAction("AddQuestionToQB");
         }
+
+        [HttpGet]
+        public IActionResult CreateClassroom()
+        {
+            var teachers = _context.Teachers.ToList();
+            return View(teachers);
+        }
+
+        [HttpPost]
+        public IActionResult CreateClassroom(Classrooms newclassroom)
+        {
+            
+            if(ModelState.IsValid)
+            {
+                _context.Classrooms.Add(newclassroom);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
