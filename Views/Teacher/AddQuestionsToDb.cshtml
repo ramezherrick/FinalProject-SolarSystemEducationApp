@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "AddQuestionsToDb";
+}
+
+<h1>AddQuestionsToDb</h1>
+@model List<Quizes>
+
+@foreach (Quizes quizes in Model)
+{
+    <h2>@quizes.QuizType</h2>
+
+    @foreach (Questions questions in ViewBag.questions)
+    {
+        if (questions.QuizId == quizes.Id)
+        {
+            <h4>@questions.Question</h4>
+        }
+    }
+}
+
+
+
+<br />
+<br />
+<form action="../Teacher/AddQuestionsToDb" method="post">
+    <input type="text" name="Question" placeholder="Enter question" />
+
+    <select name="QuizId">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <option value="@Model[i].Id">@Model[i].QuizType</option>
+        }
+    </select>
+
+    <input type="submit" />
+</form>

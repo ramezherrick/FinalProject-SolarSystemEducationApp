@@ -1,0 +1,44 @@
+﻿@model List<Quizes>
+
+@{
+    ViewData["Title"] = "AddQuestionToQB";
+}
+
+<br />
+<h2>Add Question to Quiz</h2>
+<br />
+
+<form action="../Teacher/AddQuestionToQB" method="post">
+    <input type="text" name="Question" placeholder="Enter question" />
+    <br /><br />
+    <select name="quizId">
+        @foreach (Quizes q in Model)
+        {
+            <option value="@q.Id">@q.QuizType</option>
+        }
+    </select>
+    <br /><br />
+    <input type="submit" value="Add Question" />
+</form>
+
+@{ int count;}
+
+@foreach (Quizes quizes in Model)
+{
+    count = 1;
+    <br /><hr />
+    <h3>@quizes.QuizType Quiz Template</h3>
+
+    @foreach (Questions questions in ViewBag.questions)
+    {
+        if (questions.QuizId == quizes.Id)
+        {
+            <p>
+                <a href="../Teacher/RemoveQuestion?id=@questions.Id"><button class="btn btn-danger btn-sm">Remove</button></a>
+                @count) @questions.Question
+            </p>
+            count++;
+        }
+
+    }
+}

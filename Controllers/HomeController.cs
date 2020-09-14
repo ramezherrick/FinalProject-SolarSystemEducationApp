@@ -2,24 +2,65 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using FinalProject_SolarSystemEducationApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinalProject_SolarSystemEducationApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
-            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            if (isAuthenticated)
+            {
+                //get logged in user id
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get entire user by user id
+                var user = await _userManager.FindByIdAsync(userId);
+                //get all roles associated with current user
+                var role = await _userManager.GetRolesAsync(user);
+
+                if(role.Count==0)
+                {
+                    return RedirectToAction("AssignARole", "Administration");
+                }
+
+                for (int i = 0; i < role.Count; i++)
+                {
+                    if (role[i].ToLower().Contains("teacher"))
+                    {
+                        return RedirectToAction("index", "Teacher");
+                    }
+                    else if (role[i].ToLower().Contains("student"))
+                    {
+                        return RedirectToAction("index", "Student");
+                    }
+                    else if (role[i].ToLower().Contains("admin"))
+                    {
+                        return RedirectToAction("index", "Administration");
+                    }
+                }
+            }
+
+            
             return View();
         }
 
