@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "CreateClassroom";
+}
+
+<h1>CreateClassroom</h1>
+@model List<Teachers>
+@*id teacherId classname and classaverage*@
+
+<form action="../Teacher/CreateClassroom" method="post">
+    <input type="text" name="ClassName" placeholder="class name" />
+    <select name="TeacherId">
+        @foreach(Teachers t in Model)
+        {
+            <option value="@t.Id">@t.FirstName @t.LastName</option>
+        }
+    </select>
+    <input type="submit" />
+</form>

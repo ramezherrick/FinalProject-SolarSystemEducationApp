@@ -40,7 +40,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
                 if(role.Count==0)
                 {
-                    return RedirectToAction("AssignAsStudent", "Administration");
+                    return RedirectToAction("AssignARole", "Administration");
                 }
 
                 for (int i = 0; i < role.Count; i++)
