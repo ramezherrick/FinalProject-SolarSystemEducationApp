@@ -119,6 +119,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "admin")]
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles.ToList();
