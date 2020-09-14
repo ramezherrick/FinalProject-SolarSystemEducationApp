@@ -1,0 +1,33 @@
+﻿@model List<Questionsbank>
+@{
+    ViewData["Title"] = "DisplayQB";
+}
+
+<h1>DisplayQB</h1>
+<br />
+
+@foreach (Questionsbank qb in Model)
+{
+    <p>QB ID: @qb.Id</p>
+    <p>Question ID: @qb.QuestionId</p>
+    <p>Question: @qb.Question.Question</p>
+    <p>QuizId: @qb.QuizId</p>
+    <p>Quiz: @qb.Quiz.QuizType</p>
+
+    <br />
+    <hr />
+    <br />
+}
+
+@foreach (Quizes quiz in ViewBag.Quizes)
+{
+    <h2>@quiz.QuizType</h2>
+
+    @foreach (Questionsbank questions in Model)
+    {
+        if (questions.QuizId == quiz.Id)
+        {
+            <h6>@questions.Question.Question</h6>
+        }
+    }
+}
