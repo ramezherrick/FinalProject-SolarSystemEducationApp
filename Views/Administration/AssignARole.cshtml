@@ -3,30 +3,45 @@
     ViewData["Title"] = "AssignARole";
 }
 
-<h1>AssignARole for a new user</h1>
+<h1>New User Initiation</h1>
 @model List<AspNetRoles>
 
 
 <form action="../Administration/AssignARole" method="post">
-    <input type="text" name="FirstName" />
-    <input type="text" name="LastName" />
-    
-    <p>if you are student leave blank</p>
-    <input type="text" name="password" />
-    <select name="role">
-        @foreach (AspNetRoles roles in Model)
-        {
-            <option value="@roles.Name">@roles.Name </option>
-        }
-    </select>
+    <p>
+        First Name<br />
+        <input type="text" name="FirstName" required />
+    </p>
 
-    <p>if you are teacher leave blank</p>
-    <select name="classId">
-        @foreach (Classrooms c in ViewBag.classrooms)
-        {
-            <option value="@c.Id">@c.ClassName</option>
-        }
-    </select>
+    <p>
+        Last Name<br />
+        <input type="text" name="LastName" required />
+    </p>
+
+    <p>
+        Who are you registering as?<br />
+        <select name="role">
+            @foreach (AspNetRoles roles in Model)
+            {
+                <option value="@roles.Name">@roles.Name </option>
+            }
+        </select>
+    </p>
+
+    <p>
+        Password (For Teacher/Admin ONLY)<br />
+        <input type="password" name="password" />
+    </p>
+
+    <p>
+        Select a classroom (Student ONLY)<br />
+        <select name="classId">
+            @foreach (Classrooms c in ViewBag.classrooms)
+            {
+                <option value="@c.Id">@c.ClassName</option>
+            }
+        </select>
+    </p>
     <input type="submit" />
 </form>
 
