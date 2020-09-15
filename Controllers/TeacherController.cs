@@ -12,10 +12,12 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
     public class TeacherController : Controller
     {
         private readonly SolarSystemDbContext _context;
+        private readonly SolarDAL _solarDAL;
 
-        public TeacherController(SolarSystemDbContext context)
+        public TeacherController(SolarSystemDbContext context, SolarDAL solarDAL)
         {
             _context = context;
+            _solarDAL = solarDAL; 
         }
         public IActionResult Index()
         {
@@ -60,7 +62,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         [HttpGet]
         public IActionResult AddQuestionsbankToDb()
         {
-
             var questionsbank = _context.Questionsbank;
             return View(questionsbank);
         }

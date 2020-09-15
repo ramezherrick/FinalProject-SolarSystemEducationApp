@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayGeneralQuiz";
+}
+
+<h1>DisplayGeneralQuiz</h1>
+@model List<Questionsbank>
+
+<form action="../Student/WhatAmI" method="post">
+    @foreach (Quizes quiz in ViewBag.Quizes)
+    {
+        if (quiz.Id == 1)
+        {
+            <h2>@quiz.QuizType</h2>
+
+            @foreach (Questionsbank q in Model)
+            {
+                if (q.QuizId == 1)
+                {
+                    <h6>@q.Question.Question</h6>
+                }
+            }
+        }
+       
+    }
+    <input type="radio" id="true" name="searchtype" value="ture"/>
+    <label for="true">True</label>
+    <input type="radio" id="false" name="searchtype" value="false" />
+    <label for="false">False</label>
+    <input type="submit" value="Submit" />
+</form>
