@@ -10,19 +10,138 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
     public class StudentController : Controller
     {
         private readonly SolarSystemDbContext _context;
-        private readonly SolarDAL _solarDAL;
-
-        public StudentController(SolarSystemDbContext context, SolarDAL solarDAL)
+        private readonly SolarDAL _solarDal;
+        public StudentController(SolarSystemDbContext context)
         {
             _context = context;
-            _solarDAL = solarDAL;
+            _solarDal = new SolarDAL();
+        }
+
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> TakePlanetsQuiz()
+        {
+            List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+
+            //Get A random planet from the API and send it to the view via Viewbag
+            Random planet = new Random();
+            int randomPlanetIndex = planet.Next(1, planetsList.Count);
+
+            ViewBag.body = planetsList[randomPlanetIndex];
+            ViewBag.randomPlanetIndex = randomPlanetIndex;
+
+            //Get questionsbank from SQL and send it to the view
+            _context.Questions.ToList();
+            _context.Quizes.ToList();
+            var questiosBankList = _context.Questionsbank.ToList();
+            return View(questiosBankList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TakePlanetsQuiz(int randomPlanetIndex, List<string> answers)
+        {
+            int numberOfCorrectAnswers = 0;
+            int numberOfMoons = 0;
+
+            List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+
+            string mass = planetsList[randomPlanetIndex].mass.massValue.ToString() + "^" + planetsList[randomPlanetIndex].mass.massExponent.ToString();
+            //check radius answer
+            if (answers[0] == mass)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            //check volume answer
+            string planetVolume = planetsList[randomPlanetIndex].vol.volValue.ToString() + "^" + planetsList[randomPlanetIndex].vol.volExponent.ToString();
+            if (answers[1] == planetVolume)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            //checking for number of moons it has
+            if (planetsList[randomPlanetIndex].moons == null)
+            {
+                numberOfMoons = 0;
+            }
+            if (planetsList[randomPlanetIndex].moons != null)
+            {
+                numberOfMoons = planetsList[randomPlanetIndex].moons.Count();
+            }
+
+            if (answers[2] == numberOfMoons.ToString())
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            //check who discovered this planet
+            if (answers[3] == planetsList[randomPlanetIndex].discoveredBy)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            //check when was the planet discovered
+            if (answers[4] == planetsList[randomPlanetIndex].discoveryDate)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            //check gravity answer
+            if (answers[5] == planetsList[randomPlanetIndex].gravity.ToString())
+            {
+                numberOfCorrectAnswers += 1;
+            }
+
+            return RedirectToAction("Index");
+
+        }
+        public async Task<List<Body>> CreatePlanetsListFromAPIAsync()
+        {
+            //access API get a list of all bodies in the api
+            List<Body> body = await _solarDal.GetBody();
+
+            //create an empty list of bodies and populate it with planets
+            List<Body> planetsList = new List<Body>();
+
+            for (int i = 0; i < body.Count; i++)
+            {
+                if (body[i].isPlanet == true)
+                {
+                    planetsList.Add(body[i]);
+                }
+            }
+            return planetsList;
+        }
+
+
+        public async Task<IActionResult> DisplayBodies()
+        {
+            var allInfo = await _solarDal.GetBody();
+            return View(allInfo);
+        }
+
+        public async Task<IActionResult> BodyDetails(string id)
+        {
+            List<Body> bodiesList = await _solarDal.GetBody();
+            Body currentBody = new Body();
+            foreach (Body b in bodiesList)
+            {
+                if (b.id == id)
+                {
+                    currentBody = b;
+                }
+            }
+
+            return View(currentBody);
+
         }
         public async Task<IActionResult> DisplayGeneralQuizAsync()
         {
-            var search = await _solarDAL.GetBody(); 
+            var search = await _solarDal.GetBody();
 
-           //It's probably three lines of code that go here.
-           //stick the english name in a view bag and get the index of over to the WhatAmI method. 
+            //It's probably three lines of code that go here.
+            //stick the english name in a view bag and get the index of over to the WhatAmI method. 
 
             //Need to make that two methods. 
 
@@ -33,26 +152,22 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.Quizes = quizes;
             return View(qb);
         }
-        [HttpGet]
-        public async Task<IActionResult> WhatAmI(string searchtype, )
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> WhatAmI(string searchtype, )
+        //{
 
-            if(searchtype == )
-            {
+        //    if (searchtype == )
+        //    {
 
-                string answer = "Correct!";
-                return View("DisplayGeneralQuizAsync", answer)
-            }
-            else
-            {
-                string answer = "Incorrect";
-                return View("DisplayGeneralQuizAsync", answer); 
-            }
-        }
-        public IActionResult Index()
-        {
-            return View();
-        }
-        
+        //        string answer = "Correct!";
+        //        return View("DisplayGeneralQuizAsync", answer)
+        //    }
+        //    else
+        //    {
+        //        string answer = "Incorrect";
+        //        return View("DisplayGeneralQuizAsync", answer);
+        //    }
+        //}
     }
 }
+

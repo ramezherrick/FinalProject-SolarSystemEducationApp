@@ -1,0 +1,67 @@
+﻿@model List<Body>
+
+@{
+    ViewData["Title"] = "Display Bodies";
+}
+
+@{ string bodyName = "";}
+@{ int count = 1;}
+<h2>Click a name to learn more about that Planet or Moon!</h2>
+<br /><br />
+<h3>Planets</h3>
+@foreach (Body b in Model)
+{
+    if (b.isPlanet == true)
+    {
+        if (b.englishName == "" || b.englishName == null)
+        {
+            bodyName = b.name;
+        }
+        else
+        {
+            bodyName = b.englishName;
+        }
+
+        if (count % 7 == 0)
+        {
+            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
+            <hr width="70%" align="left" />
+        }
+        else
+        {
+            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        }
+
+        count++;
+    }
+}
+<br /><br /><br />
+<h3>Moons</h3>
+@{ count = 1;}
+
+@foreach (Body b in Model)
+{
+    if (b.isPlanet == false)
+    {
+        if (b.englishName == "" || b.englishName == null)
+        {
+            bodyName = b.name;
+        }
+        else
+        {
+            bodyName = b.englishName;
+        }
+
+        if (count % 7 == 0)
+        {
+            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
+            <hr width="70%" align="left" />
+        }
+        else
+        {
+            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        }
+
+        count++;
+    }
+}

@@ -8,12 +8,16 @@
 @*id teacherId classname and classaverage*@
 
 <form action="../Teacher/CreateClassroom" method="post">
-    <input type="text" name="ClassName" placeholder="class name" />
-    <select name="TeacherId">
-        @foreach(Teachers t in Model)
-        {
-            <option value="@t.Id">@t.FirstName @t.LastName</option>
-        }
-    </select>
+    <p>Class Name<br />
+    <input type="text" name="ClassName" placeholder="class name" required /></p>
+    
+    <p>Assign Teacher to Class<br />
+        <select name="TeacherId">
+            @foreach (Teachers t in Model)
+            {
+                <option value="@t.Id">@t.FirstName @t.LastName</option>
+            }
+        </select>
+    </p>
     <input type="submit" />
 </form>

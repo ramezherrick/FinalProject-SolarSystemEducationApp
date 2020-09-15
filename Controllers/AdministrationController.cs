@@ -30,11 +30,14 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _userManager = userManager;
             _context = context;
         }
+
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult CreateRole()
         {
             return View();
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleModel model)
         {
@@ -120,7 +123,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View("index");
         }
 
-        [Authorize(Roles = "Teacher")]
         [Authorize(Roles = "admin")]
         public IActionResult ListRoles()
         {
@@ -128,7 +130,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View(roles);
         }
 
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteRole(EditRoleModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
@@ -148,7 +150,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View(roles);
         }
         [HttpPost]
-        public IActionResult AssignARole(string FirstName, string LastName, string password, string role, int classId)
+        public IActionResult AssignARole(string FirstName, string LastName, string role, string password, int classId)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (password == "1234" && role == "Teacher")
@@ -165,6 +167,10 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("AssignAsTeacher");
 
+            }
+            else if(password == "5678" && role == "admin")
+            {
+                return RedirectToAction("AssignAsAdmin");
             }
             else
             {
