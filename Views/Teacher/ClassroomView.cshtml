@@ -1,0 +1,37 @@
+﻿@model Classrooms
+@{
+    ViewData["Title"] = "ClassroomView";
+}
+
+<h1>Classroom: @Model.ClassName</h1>
+
+@if (ViewBag.MyStudents == null)
+{
+    <p>There are no students currently in this class.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Student First Name</th>
+            <th>Student Last Name</th>
+            <th>Grade</th>
+        </tr>
+        @foreach (Students s in ViewBag.MyStudents)
+        {
+            <tr>
+                <td>@s.FirstName</td>
+                <td>@s.LastName</td>
+                @if (s.AverageGrade == null)
+                {
+                    <td>N/A</td>
+                }
+                else
+                {
+                    <td>@s.AverageGrade</td>
+                }
+            </tr>
+        }
+        
+    </table>
+}

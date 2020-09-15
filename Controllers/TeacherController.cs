@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
@@ -14,14 +15,16 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         private readonly SolarSystemDbContext _context;
         private readonly SolarDAL _solarDAL;
 
-        public TeacherController(SolarSystemDbContext context, SolarDAL solarDAL)
+        public TeacherController(SolarSystemDbContext context)
         {
             _context = context;
-            _solarDAL = solarDAL; 
+            _solarDAL = new SolarDAL();
         }
         public IActionResult Index()
         {
-            return View();
+            var classRooms = _context.Classrooms.ToList();
+
+            return View(classRooms);
         }
 
         //Add questions to the database in Questionsbank table
@@ -162,6 +165,24 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult ClassroomView(int id)
+        {
+            List<Students> studentList = _context.Students.Where(x => x.ClassroomId == id).ToList();
+            List<Classrooms> classroomList = _context.Classrooms.ToList();
+            Classrooms currentClass = new Classrooms();
+
+            foreach (Classrooms c in classroomList)
+            {
+                if (c.Id == id)
+                {
+                    currentClass = c;
+                }
+            }
+
+            ViewBag.MyStudents = studentList;
+
+            return View(currentClass);
+        }
     
     }
 }

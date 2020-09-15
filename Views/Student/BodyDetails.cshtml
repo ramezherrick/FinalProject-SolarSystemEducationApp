@@ -39,7 +39,7 @@ else
 }
 
 @*Display Gravity / account for null*@
-@if (Model.gravity == 0)
+@if (Model.gravity.ToString() == null || Model.gravity.ToString() == "")
 {
     <p><b>Gravity:</b> Unknown</p>
 }
