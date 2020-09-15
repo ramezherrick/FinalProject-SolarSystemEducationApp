@@ -3,10 +3,10 @@
     ViewData["Title"] = "DisplayGeneralQuiz";
 }
 
-<h1>DisplayGeneralQuiz</h1>
 @model List<Questionsbank>
 
-<form action="../Student/WhatAmI" method="post">
+<h1>Your Star is @ViewBag.body.englishName</h1>
+<form action="../Student/DisplayGeneralQuiz" method="post">
     @foreach (Quizes quiz in ViewBag.Quizes)
     {
         if (quiz.Id == 1)
@@ -21,11 +21,12 @@
                 }
             }
         }
-       
+
     }
-    <input type="radio" id="true" name="searchtype" value="ture"/>
+    <input type="radio" id="true" name="searchtype" value="bool" />
     <label for="true">True</label>
-    <input type="radio" id="false" name="searchtype" value="false" />
+    <input type="radio" id="false" name="searchtype" value="bool" />
     <label for="false">False</label>
     <input type="submit" value="Submit" />
+    <input type="number" name="randomStarIndex" value="@ViewBag.randomStarIndex" hidden />
 </form>
