@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -136,14 +137,15 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View(currentBody);
 
         }
-        public async Task<IActionResult> DisplayGeneralQuizAsync()
+        [HttpGet]
+        public async Task<IActionResult> DisplayGeneralQuiz()
         {
-            var search = await _solarDal.GetBody();
+            List<Body> search = await _solarDal.GetBody();
+            Random star = new Random();
+            int randomStarIndex = star.Next(1, search.Count);
 
-            //It's probably three lines of code that go here.
-            //stick the english name in a view bag and get the index of over to the WhatAmI method. 
-
-            //Need to make that two methods. 
+            ViewBag.body = search[randomStarIndex];
+            ViewBag.randomStarIndex = randomStarIndex;
 
 
             _context.Questions.ToList();
@@ -152,22 +154,52 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.Quizes = quizes;
             return View(qb);
         }
-        //[HttpGet]
-        //public async Task<IActionResult> WhatAmI(string searchtype, )
-        //{
+        [HttpPost]
+        public async Task<IActionResult> DisplayGeneralQuiz(bool searchtype, int randomStarIndex)
+        {
+            double grade = 0;
 
-        //    if (searchtype == )
-        //    {
+            List<Body> search = await _solarDal.GetBody();
 
-        //        string answer = "Correct!";
-        //        return View("DisplayGeneralQuizAsync", answer)
-        //    }
-        //    else
-        //    {
-        //        string answer = "Incorrect";
-        //        return View("DisplayGeneralQuizAsync", answer);
-        //    }
-        //}
+            bool a = search[randomStarIndex].isPlanet;
+
+            if (searchtype == a)
+            {
+                grade += 100;
+                ViewBag.answer = "Correct! You got 100%";
+            }
+            else
+            {
+                grade = 0;
+                ViewBag.answer = "Incorrect. You lose. ZERO!";
+            }
+            return RedirectToAction("Results", new { g = grade });
+
+        }
+        public IActionResult Results(double g)
+        {
+
+            //know we need this. finding user id. 
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //does the logged in person match someone in the database
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            int sid = students[0].Id;
+            int qid = 1; 
+
+            Grades newGrade = new Grades();
+
+            newGrade.StudentId = sid;
+            newGrade.QuizId = qid;
+            newGrade.Grade = g;
+            _context.Grades.Add(newGrade);
+            _context.SaveChanges(); 
+
+            // grades = _context.Grades.Where(x => x.StudentId = Id).First();
+            return View("BoolResults", g);
+
+        }
     }
 }
 
