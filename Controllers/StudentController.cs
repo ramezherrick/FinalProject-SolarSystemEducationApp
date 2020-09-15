@@ -9,6 +9,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 {
     public class StudentController : Controller
     {
+
         private readonly SolarSystemDbContext _context;
         private readonly SolarDAL _solarDal;
         public StudentController(SolarSystemDbContext context)
@@ -16,10 +17,12 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context = context;
             _solarDal = new SolarDAL();
         }
+
         public IActionResult Index()
         {
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> TakePlanetsQuiz()
         {
@@ -40,7 +43,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TakePlanetsQuiz(int randomPlanetIndex, List<string>answers)
+        public async Task<IActionResult> TakePlanetsQuiz(int randomPlanetIndex, List<string> answers)
         {
             int numberOfCorrectAnswers = 0;
             int numberOfMoons = 0;
@@ -49,18 +52,18 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             string mass = planetsList[randomPlanetIndex].mass.massValue.ToString() + "^" + planetsList[randomPlanetIndex].mass.massExponent.ToString();
             //check radius answer
-            if (answers[0]==mass)
+            if (answers[0] == mass)
             {
                 numberOfCorrectAnswers += 1;
             }
             //check volume answer
             string planetVolume = planetsList[randomPlanetIndex].vol.volValue.ToString() + "^" + planetsList[randomPlanetIndex].vol.volExponent.ToString();
-            if (answers[1]==planetVolume)
+            if (answers[1] == planetVolume)
             {
                 numberOfCorrectAnswers += 1;
             }
             //checking for number of moons it has
-            if (planetsList[randomPlanetIndex].moons==null)
+            if (planetsList[randomPlanetIndex].moons == null)
             {
                 numberOfMoons = 0;
             }
@@ -74,17 +77,17 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             //check who discovered this planet
-            if(answers[3]== planetsList[randomPlanetIndex].discoveredBy)
+            if (answers[3] == planetsList[randomPlanetIndex].discoveredBy)
             {
                 numberOfCorrectAnswers += 1;
             }
             //check when was the planet discovered
-            if(answers[4]==planetsList[randomPlanetIndex].discoveryDate)
+            if (answers[4] == planetsList[randomPlanetIndex].discoveryDate)
             {
                 numberOfCorrectAnswers += 1;
             }
             //check gravity answer
-            if(answers[5]== planetsList[randomPlanetIndex].gravity.ToString())
+            if (answers[5] == planetsList[randomPlanetIndex].gravity.ToString())
             {
                 numberOfCorrectAnswers += 1;
             }
@@ -109,5 +112,29 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return planetsList;
         }
+
+
+        public async Task<IActionResult> DisplayBodies()
+        {
+            var allInfo = await _solarDal.GetBody();
+            return View(allInfo);
+        }
+
+        public async Task<IActionResult> BodyDetails(string id)
+        {
+            List<Body> bodiesList = await _solarDal.GetBody();
+            Body currentBody = new Body();
+            foreach (Body b in bodiesList)
+            {
+                if (b.id == id)
+                {
+                    currentBody = b;
+                }
+            }
+
+            return View(currentBody);
+
+        }
     }
 }
+

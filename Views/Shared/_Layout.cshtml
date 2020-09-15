@@ -1,9 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http;
+@using System.Security.Claims;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> roleManager
+@inject IHttpContextAccessor httpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - FinalProject_SolarSystemEducationApp</title>
+    <title>@ViewData["Title"] - Solar System App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,21 +19,88 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FinalProject_SolarSystemEducationApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Solar System App</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+
+                    @{
+                        bool isAuthenticated = User.Identity.IsAuthenticated;
+                        if (isAuthenticated)
+                        {
+
+                            //get logged in user id
+                            var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            //get entire user by user id
+                            var user = await UserManager.FindByIdAsync(userId);
+                            //get all roles associated with current user
+                            var role = await UserManager.GetRolesAsync(user);
+
+                            for (int i = 0; i < role.Count; i++)
+                            {
+                                if (role[i].ToLower().Contains("teacher"))
+                                {
+                                    <ul class="navbar-nav flex-grow-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="CreateClassroom">Create Classroom</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="Index">My Students</a>
+                                        </li>
+                                    </ul>
+                                }
+                                else if (role[i].ToLower().Contains("student"))
+                                {
+                                    <ul class="navbar-nav flex-grow-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="DisplayBodies">Learning Center</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Quizzes</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">My Grades</a>
+                                        </li>
+                                    </ul>
+                                }
+                                else if (role[i].ToLower().Contains("admin"))
+                                {
+                                    <ul class="navbar-nav flex-grow-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Show Roles</a>
+                                        </li>
+                                    </ul>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                </li>
+                            </ul>
+                        }
+                    }
+
                 </div>
             </div>
         </nav>
