@@ -28,71 +28,107 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public async Task<IActionResult> TakePlanetsQuiz()
         {
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+            List<Body> fourPlanetsList = new List<Body>();
 
-            //Get A random planet from the API and send it to the view via Viewbag
+            //Retrieve 4 random planets from the API
             Random planet = new Random();
-            int randomPlanetIndex = planet.Next(1, planetsList.Count);
+            for (int i = 0; i < 4; i++)
+            {
+                int index = planet.Next(0, planetsList.Count);
+                fourPlanetsList.Add(planetsList[index]);
+                planetsList.RemoveAt(index);
+            }
 
-            ViewBag.body = planetsList[randomPlanetIndex];
-            ViewBag.randomPlanetIndex = randomPlanetIndex;
+            //Select a random planet from the 4 to be the test subject and send it to the view
+            int indexOfPlanetToBeTested = planet.Next(0, fourPlanetsList.Count);
+
+            if(fourPlanetsList[indexOfPlanetToBeTested].discoveredBy.ToString().Length<1)
+            {
+                fourPlanetsList[indexOfPlanetToBeTested].discoveredBy = "Unknown";
+            }
+            if (fourPlanetsList[indexOfPlanetToBeTested].discoveryDate.ToString().Length < 1)
+            {
+                fourPlanetsList[indexOfPlanetToBeTested].discoveryDate = "Unknown";
+            }
+
+            ViewBag.indexOfPlanetToBeTested = indexOfPlanetToBeTested;
 
             //Get questionsbank from SQL and send it to the view
             _context.Questions.ToList();
             _context.Quizes.ToList();
             var questiosBankList = _context.Questionsbank.ToList();
-            return View(questiosBankList);
+            ViewBag.questiosBankList = questiosBankList;
+
+            return View(fourPlanetsList);
         }
 
         [HttpPost]
-        public async Task<IActionResult> TakePlanetsQuiz(int randomPlanetIndex, List<string> answers)
+        public async Task<IActionResult> TakePlanetsQuiz(List<string> answers, string englishName)
         {
             int numberOfCorrectAnswers = 0;
             int numberOfMoons = 0;
-
+          
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+            Body testedPlanet = new Body();
+            for(int i =0;i<planetsList.Count;i++)
+            {
+                if(planetsList[i].englishName==englishName)
+                {
+                    testedPlanet = planetsList[i];
+                }
+            }
 
-            string mass = planetsList[randomPlanetIndex].mass.massValue.ToString() + "^" + planetsList[randomPlanetIndex].mass.massExponent.ToString();
+            string mass = testedPlanet.mass.massValue.ToString() + "^" + testedPlanet.mass.massExponent.ToString();
             //check radius answer
             if (answers[0] == mass)
             {
                 numberOfCorrectAnswers += 1;
             }
             //check volume answer
-            string planetVolume = planetsList[randomPlanetIndex].vol.volValue.ToString() + "^" + planetsList[randomPlanetIndex].vol.volExponent.ToString();
+            string planetVolume = testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString();
             if (answers[1] == planetVolume)
             {
                 numberOfCorrectAnswers += 1;
             }
             //checking for number of moons it has
-            if (planetsList[randomPlanetIndex].moons == null)
+            if (testedPlanet.moons == null)
             {
                 numberOfMoons = 0;
             }
-            if (planetsList[randomPlanetIndex].moons != null)
+            if (testedPlanet.moons != null)
             {
-                numberOfMoons = planetsList[randomPlanetIndex].moons.Count();
+                numberOfMoons = testedPlanet.moons.Length;
             }
 
             if (answers[2] == numberOfMoons.ToString())
             {
                 numberOfCorrectAnswers += 1;
             }
-            //check who discovered this planet
-            if (answers[3] == planetsList[randomPlanetIndex].discoveredBy)
+            ////check who discovered this planet
+            if(testedPlanet.discoveredBy.Length<1)
+            {
+                testedPlanet.discoveredBy = "Unknown";
+            }
+            if (answers[3] == testedPlanet.discoveredBy)
             {
                 numberOfCorrectAnswers += 1;
             }
-            //check when was the planet discovered
-            if (answers[4] == planetsList[randomPlanetIndex].discoveryDate)
+            ////check when was the planet discovered
+             if(testedPlanet.discoveryDate.Length<1)
+            {
+                testedPlanet.discoveryDate = "Unknown";
+            }
+            if (answers[4] == testedPlanet.discoveryDate)
             {
                 numberOfCorrectAnswers += 1;
             }
-            //check gravity answer
-            if (answers[5] == planetsList[randomPlanetIndex].gravity.ToString())
+            ////check gravity answer
+            if (answers[5] == testedPlanet.gravity.ToString())
             {
                 numberOfCorrectAnswers += 1;
             }
-
+            int total = numberOfCorrectAnswers;
+            double grade = (total / 6) * 100;
             return RedirectToAction("Index");
 
         }
@@ -106,7 +142,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             for (int i = 0; i < body.Count; i++)
             {
-                if (body[i].isPlanet == true)
+                if (body[i].isPlanet == true && body[i].mass != null && body[i].vol != null && body[i].gravity > 0.01)
                 {
                     planetsList.Add(body[i]);
                 }
