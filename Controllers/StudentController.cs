@@ -68,7 +68,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             int numberOfCorrectAnswers = 0;
             int numberOfMoons = 0;
-          
+
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
             Body testedPlanet = new Body();
             
@@ -261,6 +261,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public async Task<IActionResult> DisplayGeneralQuiz(bool searchtype, int randomStarIndex)
         {
             double grade = 0;
+            int qid = 1; 
 
             List<Body> search = await _solarDal.GetBody();
 
@@ -276,12 +277,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 grade = 0;
                 ViewBag.answer = "Incorrect. You lose. ZERO!";
             }
-            return RedirectToAction("Results", new { g = grade });
+            return RedirectToAction("Results", new { g = grade, q = qid});
 
         }
         public IActionResult Results(double g)
         {
-
             //know we need this. finding user id. 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -297,11 +297,43 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             newGrade.QuizId = qid;
             newGrade.Grade = g;
             _context.Grades.Add(newGrade);
-            _context.SaveChanges(); 
-
+            _context.SaveChanges();
+            SaveAverageGrade(); 
             // grades = _context.Grades.Where(x => x.StudentId = Id).First();
             return View("BoolResults", g);
+        }
 
+        public IActionResult SaveAverageGrade()
+        {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+            Students student = students[0]; 
+            List<Grades> grades = _context.Grades.Where(x => x.StudentId == student.Id).ToList();
+
+            int count = 0;
+            double fullPoints = 0;
+
+            foreach(Grades g in grades)
+            {
+                fullPoints += g.Grade;
+                count++; 
+            }
+            double newGrade = (fullPoints / count) * 100; 
+
+            return RedirectToAction("SaveStudentAverageGrade", newGrade); 
+        }
+        public IActionResult SaveStudentAverageGrade(double newGrade)
+        {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            Students student = students[0];
+
+            student.AverageGrade = newGrade;
+
+            _context.Students.Update(student);
+            _context.SaveChanges();
+            return View("DisplayGeneralQuiz"); 
         }
 
         [HttpGet]
