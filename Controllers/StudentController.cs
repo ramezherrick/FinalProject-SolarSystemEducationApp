@@ -71,6 +71,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
             Body testedPlanet = new Body();
+            
+            //Retrieve the 4 planets in multipe choice
             for(int i =0;i<planetsList.Count;i++)
             {
                 if(planetsList[i].englishName==englishName)
@@ -79,8 +81,9 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 }
             }
 
+            //check mass answer
             string mass = testedPlanet.mass.massValue.ToString() + "^" + testedPlanet.mass.massExponent.ToString();
-            //check radius answer
+            
             if (answers[0] == mass)
             {
                 numberOfCorrectAnswers += 1;
@@ -129,9 +132,73 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             double total = numberOfCorrectAnswers;
-            double grade = (total / 6) * 100;
-            return RedirectToAction("Index");
 
+
+            double grade = (total / 6) * 100;
+               
+
+            return RedirectToAction("ResultsPlanetsQuiz", new {g=grade,answered=answers, engname=englishName});
+        }
+        public async Task<IActionResult> ResultsPlanetsQuiz(double g, List<string> answered, string engname)
+        {
+            //find logged in userid 
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //create a list of students where student id matches logged in person id
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            List<Questions> questions = _context.Questions.Where(x => x.QuizId == 2).ToList();
+
+            List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+            Body testedPlanet = new Body();
+
+            //Retrieve the 4 planets in multipe choice
+            for (int i = 0; i < planetsList.Count; i++)
+            {
+                if (planetsList[i].englishName == engname)
+                {
+                    testedPlanet = planetsList[i];
+                }
+            }
+
+            int numberOfMoons = 0;
+
+            if (testedPlanet.moons == null)
+            {
+                numberOfMoons = 0;
+            }
+            if (testedPlanet.moons != null)
+            {
+                numberOfMoons = testedPlanet.moons.Length;
+            }
+            if (testedPlanet.discoveredBy.Length < 1)
+            {
+                testedPlanet.discoveredBy = "Unknown";
+            }
+            if (testedPlanet.discoveryDate.Length < 1)
+            {
+                testedPlanet.discoveryDate = "Unknown";
+            }
+
+            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massExponent.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), testedPlanet.moons.Count().ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
+            int studentId = students[0].Id;
+            //planets quiz
+            int quizId = 2;
+
+            Grades newGrade = new Grades();
+
+            newGrade.StudentId = studentId;
+            newGrade.QuizId = quizId;
+            newGrade.Grade = g;
+            _context.Grades.Add(newGrade);
+            _context.SaveChanges();
+
+            ViewBag.studentname = students[0].FirstName.ToString() + students[0].LastName.ToString();
+            ViewBag.grade = g;
+            ViewBag.questions = questions;
+            ViewBag.correctanswers = correctAnswers;
+            ViewBag.englishname = engname;
+            return View(answered);
         }
         public async Task<List<Body>> CreatePlanetsListFromAPIAsync()
         {
