@@ -1,0 +1,26 @@
+﻿@model List<Grades>
+
+@{
+    ViewData["Title"] = "MyGrades";
+}
+
+<h1 class="float-left">My Grades</h1>
+<h1 class="float-right">Total Grade: </h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Quiz Number</th>
+        <th>Quiz Name</th>
+        <th>Grade</th>
+    </tr>
+    @{ int count = 1;}
+    @foreach (Grades g in Model)
+    {
+        <tr>
+            <td>@count</td>
+            <td>@g.Quiz.QuizType</td>
+            <td>@g.Grade</td>
+        </tr>
+        count++;
+    }
+</table>

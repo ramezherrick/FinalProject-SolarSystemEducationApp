@@ -43,7 +43,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             //Select a random planet from the 4 to be the test subject and send it to the view
             int indexOfPlanetToBeTested = planet.Next(0, fourPlanetsList.Count);
 
-            if(fourPlanetsList[indexOfPlanetToBeTested].discoveredBy.ToString().Length<1)
+            if (fourPlanetsList[indexOfPlanetToBeTested].discoveredBy.ToString().Length < 1)
             {
                 fourPlanetsList[indexOfPlanetToBeTested].discoveredBy = "Unknown";
             }
@@ -71,11 +71,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
             Body testedPlanet = new Body();
-            
+
             //Retrieve the 4 planets in multipe choice
-            for(int i =0;i<planetsList.Count;i++)
+            for (int i = 0; i < planetsList.Count; i++)
             {
-                if(planetsList[i].englishName==englishName)
+                if (planetsList[i].englishName == englishName)
                 {
                     testedPlanet = planetsList[i];
                 }
@@ -83,7 +83,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             //check mass answer
             string mass = testedPlanet.mass.massValue.ToString() + "^" + testedPlanet.mass.massExponent.ToString();
-            
+
             if (answers[0] == mass)
             {
                 numberOfCorrectAnswers += 1;
@@ -109,7 +109,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             ////check who discovered this planet
-            if(testedPlanet.discoveredBy.Length<1)
+            if (testedPlanet.discoveredBy.Length < 1)
             {
                 testedPlanet.discoveredBy = "Unknown";
             }
@@ -118,7 +118,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             ////check when was the planet discovered
-             if(testedPlanet.discoveryDate.Length<1)
+            if (testedPlanet.discoveryDate.Length < 1)
             {
                 testedPlanet.discoveryDate = "Unknown";
             }
@@ -135,9 +135,9 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
 
             double grade = (total / 6) * 100;
-               
 
-            return RedirectToAction("ResultsPlanetsQuiz", new {g=grade,answered=answers, engname=englishName});
+
+            return RedirectToAction("ResultsPlanetsQuiz", new { g = grade, answered = answers, engname = englishName });
         }
         public async Task<IActionResult> ResultsPlanetsQuiz(double g, List<string> answered, string engname)
         {
@@ -261,7 +261,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public async Task<IActionResult> DisplayGeneralQuiz(bool searchtype, int randomStarIndex)
         {
             double grade = 0;
-            int qid = 1; 
+            int qid = 1;
 
             List<Body> search = await _solarDal.GetBody();
 
@@ -277,7 +277,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 grade = 0;
                 ViewBag.answer = "Incorrect. You lose. ZERO!";
             }
-            return RedirectToAction("Results", new { g = grade, q = qid});
+            return RedirectToAction("Results", new { g = grade, q = qid });
 
         }
         public IActionResult Results(double g)
@@ -289,7 +289,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
 
             int sid = students[0].Id;
-            int qid = 1; 
+            int qid = 1;
 
             Grades newGrade = new Grades();
 
@@ -298,42 +298,64 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             newGrade.Grade = g;
             _context.Grades.Add(newGrade);
             _context.SaveChanges();
-            SaveAverageGrade(); 
-            // grades = _context.Grades.Where(x => x.StudentId = Id).First();
+            SaveAverageGrade();
+            
             return View("BoolResults", g);
         }
 
-        public IActionResult SaveAverageGrade()
+        public void SaveAverageGrade()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
-            Students student = students[0]; 
+            Students student = students[0];
             List<Grades> grades = _context.Grades.Where(x => x.StudentId == student.Id).ToList();
 
+            int? cid = student.ClassroomId;
             int count = 0;
-            double fullPoints = 0;
+            double? fullPoints = 0;
 
-            foreach(Grades g in grades)
+            foreach (Grades g in grades)
             {
                 fullPoints += g.Grade;
-                count++; 
+                count++;
             }
-            double newGrade = (fullPoints / count) * 100; 
-
-            return RedirectToAction("SaveStudentAverageGrade", newGrade); 
-        }
-        public IActionResult SaveStudentAverageGrade(double newGrade)
-        {
-            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
-
-            Students student = students[0];
+            double? newGrade = (fullPoints / count);
 
             student.AverageGrade = newGrade;
 
+            _context.Entry(student).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Students.Update(student);
             _context.SaveChanges();
-            return View("DisplayGeneralQuiz"); 
+
+            SaveClassGrade(cid);
+        }
+        public void SaveClassGrade(int? cid)
+        {
+            List<Classrooms> classroom = _context.Classrooms.Where(x => x.Id == cid).ToList();
+            Classrooms cRoom = classroom[0]; 
+            List<Students> students = _context.Students.ToList();
+
+
+            double? points = 0;
+            double count = 0;
+
+            foreach (Students student in students)
+            {
+                if (student.ClassroomId == cid)
+                {
+                    if(student.AverageGrade != null)
+                    {
+                        points += student.AverageGrade;
+                        count++;
+                    }
+                }
+            }
+            double? classGrade = (points / count);
+            cRoom.ClassAvg = classGrade;
+
+            _context.Entry(cRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Classrooms.Update(cRoom);
+            _context.SaveChanges(); 
         }
 
         [HttpGet]
@@ -493,6 +515,28 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return moonsList;
         }
+
+        public IActionResult MyGrades()
+        {
+            _context.Quizes.ToList();
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            List<Students> studentList = _context.Students.ToList();
+            Students currentStudent = new Students();
+
+            foreach (Students s in studentList)
+            {
+                if (s.UserId == id)
+                {
+                    currentStudent = s;
+                }
+            }
+
+            List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
+
+            return View(myGrades);
+        }
     }
 }
+
 
