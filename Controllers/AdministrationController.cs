@@ -192,5 +192,37 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             return View();
         }
+
+        public IActionResult DisplayStudents()
+        {
+            var studentList = _context.Students.ToList();
+            return View(studentList);
+        }
+        public IActionResult DisplayUsers()
+        {
+            var usersList = _context.AspNetUsers.ToList();
+            return View(usersList);
+        }
+        public IActionResult DeleteStudent( int id)
+        {
+            var foundStudent = _context.Students.Find(id);
+            if (foundStudent != null)
+            {
+                _context.Students.Remove(foundStudent);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteUser(string id)
+        {
+            var foundUser = _context.AspNetUsers.Find(id);
+
+            if(foundUser !=null)
+            {
+                _context.AspNetUsers.Remove(foundUser);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayStudents";
+}
+
+<h1>DisplayStudents</h1>
+@model List<AspNetUsers>
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>User Name</th>
+    </tr>
+    @foreach (AspNetUsers a in Model)
+    {
+        <tr>
+            <td>@a.Email</td>
+            <td>@a.UserName</td>
+            <td><a class="btn btn-primary" href="../Administration/DeleteUser?id=@a.Id">Delete Users</a></td>
+        </tr>
+    }
+
+</table>

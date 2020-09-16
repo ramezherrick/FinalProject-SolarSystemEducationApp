@@ -184,6 +184,16 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View(currentClass);
         }
 
+        public IActionResult LeaderBoard()
+        {
+            _context.Teachers.ToList();
+            List<Classrooms> allClassesDb = _context.Classrooms.ToList();
+
+            List<Classrooms> classroom = _context.Classrooms.OrderBy(x => x.ClassAvg).ToList();
+
+         return View(classroom);
+        }
+
     
     }
 }
