@@ -339,6 +339,27 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return moonsList;
         }
+
+        public IActionResult MyGrades()
+        {
+            _context.Quizes.ToList();
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            List<Students> studentList = _context.Students.ToList();
+            Students currentStudent = new Students();
+
+            foreach (Students s in studentList)
+            {
+                if (s.UserId == id)
+                {
+                    currentStudent = s;
+                }
+            }
+
+            List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
+
+            return View(myGrades);
+        }
     }
 }
 
