@@ -183,6 +183,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(currentClass);
         }
+
     
     }
 }

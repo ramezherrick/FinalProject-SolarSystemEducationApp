@@ -43,7 +43,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             //Select a random planet from the 4 to be the test subject and send it to the view
             int indexOfPlanetToBeTested = planet.Next(0, fourPlanetsList.Count);
 
-            if(fourPlanetsList[indexOfPlanetToBeTested].discoveredBy.ToString().Length<1)
+            if (fourPlanetsList[indexOfPlanetToBeTested].discoveredBy.ToString().Length < 1)
             {
                 fourPlanetsList[indexOfPlanetToBeTested].discoveredBy = "Unknown";
             }
@@ -68,19 +68,22 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             int numberOfCorrectAnswers = 0;
             int numberOfMoons = 0;
-          
+
             List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
             Body testedPlanet = new Body();
-            for(int i =0;i<planetsList.Count;i++)
+
+            //Retrieve the 4 planets in multipe choice
+            for (int i = 0; i < planetsList.Count; i++)
             {
-                if(planetsList[i].englishName==englishName)
+                if (planetsList[i].englishName == englishName)
                 {
                     testedPlanet = planetsList[i];
                 }
             }
 
+            //check mass answer
             string mass = testedPlanet.mass.massValue.ToString() + "^" + testedPlanet.mass.massExponent.ToString();
-            //check radius answer
+
             if (answers[0] == mass)
             {
                 numberOfCorrectAnswers += 1;
@@ -106,7 +109,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             ////check who discovered this planet
-            if(testedPlanet.discoveredBy.Length<1)
+            if (testedPlanet.discoveredBy.Length < 1)
             {
                 testedPlanet.discoveredBy = "Unknown";
             }
@@ -115,7 +118,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             ////check when was the planet discovered
-             if(testedPlanet.discoveryDate.Length<1)
+            if (testedPlanet.discoveryDate.Length < 1)
             {
                 testedPlanet.discoveryDate = "Unknown";
             }
@@ -129,9 +132,73 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 numberOfCorrectAnswers += 1;
             }
             double total = numberOfCorrectAnswers;
-            double grade = (total / 6) * 100;
-            return RedirectToAction("Index");
 
+
+            double grade = (total / 6) * 100;
+
+
+            return RedirectToAction("ResultsPlanetsQuiz", new { g = grade, answered = answers, engname = englishName });
+        }
+        public async Task<IActionResult> ResultsPlanetsQuiz(double g, List<string> answered, string engname)
+        {
+            //find logged in userid 
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //create a list of students where student id matches logged in person id
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            List<Questions> questions = _context.Questions.Where(x => x.QuizId == 2).ToList();
+
+            List<Body> planetsList = await CreatePlanetsListFromAPIAsync();
+            Body testedPlanet = new Body();
+
+            //Retrieve the 4 planets in multipe choice
+            for (int i = 0; i < planetsList.Count; i++)
+            {
+                if (planetsList[i].englishName == engname)
+                {
+                    testedPlanet = planetsList[i];
+                }
+            }
+
+            int numberOfMoons = 0;
+
+            if (testedPlanet.moons == null)
+            {
+                numberOfMoons = 0;
+            }
+            if (testedPlanet.moons != null)
+            {
+                numberOfMoons = testedPlanet.moons.Length;
+            }
+            if (testedPlanet.discoveredBy.Length < 1)
+            {
+                testedPlanet.discoveredBy = "Unknown";
+            }
+            if (testedPlanet.discoveryDate.Length < 1)
+            {
+                testedPlanet.discoveryDate = "Unknown";
+            }
+
+            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massExponent.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), testedPlanet.moons.Count().ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
+            int studentId = students[0].Id;
+            //planets quiz
+            int quizId = 2;
+
+            Grades newGrade = new Grades();
+
+            newGrade.StudentId = studentId;
+            newGrade.QuizId = quizId;
+            newGrade.Grade = g;
+            _context.Grades.Add(newGrade);
+            _context.SaveChanges();
+
+            ViewBag.studentname = students[0].FirstName.ToString() + students[0].LastName.ToString();
+            ViewBag.grade = g;
+            ViewBag.questions = questions;
+            ViewBag.correctanswers = correctAnswers;
+            ViewBag.englishname = engname;
+            return View(answered);
         }
         public async Task<List<Body>> CreatePlanetsListFromAPIAsync()
         {
@@ -194,6 +261,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public async Task<IActionResult> DisplayGeneralQuiz(bool searchtype, int randomStarIndex)
         {
             double grade = 0;
+            int qid = 1;
 
             List<Body> search = await _solarDal.GetBody();
 
@@ -209,12 +277,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 grade = 0;
                 ViewBag.answer = "Incorrect. You lose. ZERO!";
             }
-            return RedirectToAction("Results", new { g = grade });
+            return RedirectToAction("Results", new { g = grade, q = qid });
 
         }
         public IActionResult Results(double g)
         {
-
             //know we need this. finding user id. 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -222,7 +289,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
 
             int sid = students[0].Id;
-            int qid = 1; 
+            int qid = 1;
 
             Grades newGrade = new Grades();
 
@@ -230,11 +297,65 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             newGrade.QuizId = qid;
             newGrade.Grade = g;
             _context.Grades.Add(newGrade);
-            _context.SaveChanges(); 
-
-            // grades = _context.Grades.Where(x => x.StudentId = Id).First();
+            _context.SaveChanges();
+            SaveAverageGrade();
+            
             return View("BoolResults", g);
+        }
 
+        public void SaveAverageGrade()
+        {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+            Students student = students[0];
+            List<Grades> grades = _context.Grades.Where(x => x.StudentId == student.Id).ToList();
+
+            int? cid = student.ClassroomId;
+            int count = 0;
+            double? fullPoints = 0;
+
+            foreach (Grades g in grades)
+            {
+                fullPoints += g.Grade;
+                count++;
+            }
+            double? newGrade = (fullPoints / count);
+
+            student.AverageGrade = newGrade;
+
+            _context.Entry(student).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Students.Update(student);
+            _context.SaveChanges();
+
+            SaveClassGrade(cid);
+        }
+        public void SaveClassGrade(int? cid)
+        {
+            List<Classrooms> classroom = _context.Classrooms.Where(x => x.Id == cid).ToList();
+            Classrooms cRoom = classroom[0]; 
+            List<Students> students = _context.Students.ToList();
+
+
+            double? points = 0;
+            double count = 0;
+
+            foreach (Students student in students)
+            {
+                if (student.ClassroomId == cid)
+                {
+                    if(student.AverageGrade != null)
+                    {
+                        points += student.AverageGrade;
+                        count++;
+                    }
+                }
+            }
+            double? classGrade = (points / count);
+            cRoom.ClassAvg = classGrade;
+
+            _context.Entry(cRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Classrooms.Update(cRoom);
+            _context.SaveChanges(); 
         }
 
         [HttpGet]
@@ -318,7 +439,62 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             double total = numberOfCorrectAnswers;
             double grade = (total / 4) * 100;
-            return RedirectToAction("Index");
+
+            return RedirectToAction("ResultsMoonsQuiz", new { g = grade, answered = answers, engname = englishName });
+        }
+
+        public async Task<IActionResult> ResultsMoonsQuiz(double g, List<string> answered, string engname)
+        {
+            //find logged in userid 
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //create a list of students where student id matches logged in person id
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            List<Questions> questions = _context.Questions.Where(x => x.QuizId == 3).ToList();
+
+            List<Body> moonsList = await CreateMoonsListFromAPIAsync();
+            Body testedMoon = new Body();
+
+            //Retrieve the 4 planets in multipe choice
+            for (int i = 0; i < moonsList.Count; i++)
+            {
+                if (moonsList[i].englishName == engname)
+                {
+                    testedMoon = moonsList[i];
+                }
+            }
+            if (testedMoon.aroundPlanet == null)
+            {
+                testedMoon.aroundPlanet.planet = "Not around a planet";
+            }
+            if (testedMoon.discoveryDate.Length < 1)
+            {
+                testedMoon.discoveryDate = "Unknown";
+            }
+            if (testedMoon.discoveredBy.Length < 1)
+            {
+                testedMoon.discoveredBy = "Unknown";
+            }
+            List<string> correctAnswers = new List<string>() { testedMoon.mass.massExponent.ToString() + "^" + testedMoon.mass.massExponent.ToString(), testedMoon.discoveredBy.ToString(), testedMoon.discoveryDate.ToString(), testedMoon.aroundPlanet.planet.ToString() };
+            int studentId = students[0].Id;
+            //planets quiz
+            int quizId = 3;
+
+            Grades newGrade = new Grades();
+
+            newGrade.StudentId = studentId;
+            newGrade.QuizId = quizId;
+            newGrade.Grade = g;
+            _context.Grades.Add(newGrade);
+            _context.SaveChanges();
+
+            ViewBag.studentname = students[0].FirstName.ToString() + students[0].LastName.ToString();
+            ViewBag.grade = g;
+            ViewBag.questions = questions;
+            ViewBag.correctanswers = correctAnswers;
+            ViewBag.englishname = engname;
+            return View(answered);
         }
 
         public async Task<List<Body>> CreateMoonsListFromAPIAsync()
@@ -362,4 +538,5 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         }
     }
 }
+
 
