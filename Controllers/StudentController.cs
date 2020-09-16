@@ -128,7 +128,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             {
                 numberOfCorrectAnswers += 1;
             }
-            int total = numberOfCorrectAnswers;
+            double total = numberOfCorrectAnswers;
             double grade = (total / 6) * 100;
             return RedirectToAction("Index");
 
@@ -235,6 +235,109 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             // grades = _context.Grades.Where(x => x.StudentId = Id).First();
             return View("BoolResults", g);
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TakeMoonsQuiz()
+        {
+            List<Body> moonsList = await CreateMoonsListFromAPIAsync();
+            List<Body> fourMoonsList = new List<Body>();
+
+            //Retrieve 4 random planets from the API
+            Random moon = new Random();
+            for (int i = 0; i < 4; i++)
+            {
+                int index = moon.Next(0, moonsList.Count);
+                fourMoonsList.Add(moonsList[index]);
+                moonsList.RemoveAt(index);
+            }
+
+            //Select a random planet from the 4 to be the test subject and send it to the view
+            int indexOfMoonToBeTested = moon.Next(0, fourMoonsList.Count);
+
+            ViewBag.indexOfMoonToBeTested = indexOfMoonToBeTested;
+
+            //Get questionsbank from SQL and send it to the view
+            _context.Questions.ToList();
+            _context.Quizes.ToList();
+            var questiosBankList = _context.Questionsbank.ToList();
+            ViewBag.questiosBankList = questiosBankList;
+
+            return View(fourMoonsList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TakeMoonsQuiz(List<string> answers, string englishName)
+        {
+            int numberOfCorrectAnswers = 0;
+
+            List<Body> moonsList = await CreateMoonsListFromAPIAsync();
+            Body testedMoon = new Body();
+            for (int i = 0; i < moonsList.Count; i++)
+            {
+                if (moonsList[i].englishName == englishName)
+                {
+                    testedMoon = moonsList[i];
+                }
+            }
+
+            string mass = testedMoon.mass.massValue.ToString() + "^" + testedMoon.mass.massExponent.ToString();
+            //check mass answer
+            if (answers[0] == mass)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            ////check who discovered this moon
+            if (testedMoon.discoveredBy.Length < 1)
+            {
+                testedMoon.discoveredBy = "Unknown";
+            }
+            if (answers[1] == testedMoon.discoveredBy)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+            ////check when was the moon discovered
+            if (testedMoon.discoveryDate.Length < 1)
+            {
+                testedMoon.discoveryDate = "Unknown";
+            }
+            if (answers[2] == testedMoon.discoveryDate)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+
+            //check what planet moon revolves around
+            if (testedMoon.aroundPlanet == null)
+            {
+                testedMoon.aroundPlanet.planet = "Not around a planet";
+            }
+            if (answers[3] == testedMoon.aroundPlanet.planet)
+            {
+                numberOfCorrectAnswers += 1;
+            }
+
+            double total = numberOfCorrectAnswers;
+            double grade = (total / 4) * 100;
+            return RedirectToAction("Index");
+        }
+
+        public async Task<List<Body>> CreateMoonsListFromAPIAsync()
+        {
+            //access API get a list of all bodies in the api
+            List<Body> body = await _solarDal.GetBody();
+
+            //create an empty list of bodies and populate it with planets
+            List<Body> moonsList = new List<Body>();
+
+            for (int i = 0; i < body.Count; i++)
+            {
+                //remove volume, gravity
+                if (body[i].isPlanet == false && body[i].mass != null && body[i].aroundPlanet != null && body[i].discoveredBy.Length > 0 && body[i].discoveryDate.Length > 0 && body[i].englishName.Length > 0)
+                {
+                    moonsList.Add(body[i]);
+                }
+            }
+            return moonsList;
         }
     }
 }
