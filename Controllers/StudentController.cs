@@ -439,7 +439,62 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             double total = numberOfCorrectAnswers;
             double grade = (total / 4) * 100;
-            return RedirectToAction("Index");
+
+            return RedirectToAction("ResultsMoonsQuiz", new { g = grade, answered = answers, engname = englishName });
+        }
+
+        public async Task<IActionResult> ResultsMoonsQuiz(double g, List<string> answered, string engname)
+        {
+            //find logged in userid 
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //create a list of students where student id matches logged in person id
+            List<Students> students = _context.Students.Where(x => x.UserId == id).ToList();
+
+            List<Questions> questions = _context.Questions.Where(x => x.QuizId == 3).ToList();
+
+            List<Body> moonsList = await CreateMoonsListFromAPIAsync();
+            Body testedMoon = new Body();
+
+            //Retrieve the 4 planets in multipe choice
+            for (int i = 0; i < moonsList.Count; i++)
+            {
+                if (moonsList[i].englishName == engname)
+                {
+                    testedMoon = moonsList[i];
+                }
+            }
+            if (testedMoon.aroundPlanet == null)
+            {
+                testedMoon.aroundPlanet.planet = "Not around a planet";
+            }
+            if (testedMoon.discoveryDate.Length < 1)
+            {
+                testedMoon.discoveryDate = "Unknown";
+            }
+            if (testedMoon.discoveredBy.Length < 1)
+            {
+                testedMoon.discoveredBy = "Unknown";
+            }
+            List<string> correctAnswers = new List<string>() { testedMoon.mass.massExponent.ToString() + "^" + testedMoon.mass.massExponent.ToString(), testedMoon.discoveredBy.ToString(), testedMoon.discoveryDate.ToString(), testedMoon.aroundPlanet.planet.ToString() };
+            int studentId = students[0].Id;
+            //planets quiz
+            int quizId = 3;
+
+            Grades newGrade = new Grades();
+
+            newGrade.StudentId = studentId;
+            newGrade.QuizId = quizId;
+            newGrade.Grade = g;
+            _context.Grades.Add(newGrade);
+            _context.SaveChanges();
+
+            ViewBag.studentname = students[0].FirstName.ToString() + students[0].LastName.ToString();
+            ViewBag.grade = g;
+            ViewBag.questions = questions;
+            ViewBag.correctanswers = correctAnswers;
+            ViewBag.englishname = engname;
+            return View(answered);
         }
 
         public async Task<List<Body>> CreateMoonsListFromAPIAsync()
