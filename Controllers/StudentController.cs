@@ -240,10 +240,18 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public async Task<IActionResult> DisplayGeneralQuiz()
         {
             List<Body> search = await _solarDal.GetBody();
+            List<Body> newSearch = new List<Body>(); 
+            foreach(Body s in search)
+            {
+                if(s.englishName.Length > 0)
+                {
+                    newSearch.Add(s); 
+                }
+            }
             Random star = new Random();
-            int randomStarIndex = star.Next(1, search.Count);
+            int randomStarIndex = star.Next(1, newSearch.Count);
 
-            ViewBag.body = search[randomStarIndex];
+            ViewBag.body = newSearch[randomStarIndex];
             ViewBag.randomStarIndex = randomStarIndex;
 
             _context.Questions.ToList();
@@ -294,6 +302,15 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context.Grades.Add(newGrade);
             _context.SaveChanges();
             SaveAverageGrade();
+            
+            if(g == 100)
+            {
+                ViewBag.results = "You passed! 100%";
+            }
+            else
+            {
+                ViewBag.results = "You failed :["; 
+            }
             
             return View("BoolResults", g);
         }
