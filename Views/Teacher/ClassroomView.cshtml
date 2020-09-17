@@ -22,8 +22,8 @@ else
             if (s.ClassroomId == Model.Id)
             {
                 <tr>
-                <td>@s.FirstName</td>
-                <td>@s.LastName</td>
+                <td><a href="../Teacher/StudentGrades?id=@s.Id">@s.FirstName</a></td>
+                <td><a href="../Teacher/StudentGrades?id=@s.Id">@s.LastName</a></td>
                 @if (s.AverageGrade == null)
                 {
                     <td>N/A</td>

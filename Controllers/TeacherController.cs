@@ -194,6 +194,26 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
          return View(classroom);
         }
 
-    
+        public IActionResult StudentGrades(int id)
+        {
+            _context.Quizes.ToList();
+
+            List<Students> studentsList = _context.Students.ToList();
+            Students currentStudent = new Students();
+
+            foreach (Students s in studentsList)
+            {
+                if (s.Id == id)
+                {
+                    currentStudent = s;
+                }
+            }
+
+            ViewBag.CurrentStudent = currentStudent;
+
+            List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
+
+            return View(myGrades);
+        }
     }
 }

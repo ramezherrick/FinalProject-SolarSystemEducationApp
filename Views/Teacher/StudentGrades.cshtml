@@ -1,10 +1,11 @@
 ﻿@model List<Grades>
 
 @{
-    ViewData["Title"] = "My Grades";
+    ViewData["Title"] = "StudentGrades";
 }
 
-<h1 class="float-left">My Grades</h1>
+<h1 class="float-left">All Grades for: @ViewBag.CurrentStudent.FirstName @ViewBag.CurrentStudent.LastName</h1>
+
 <h1 class="float-right">Total Grade: @ViewBag.CurrentStudent.AverageGrade</h1>
 
 <table class="table table-bordered">
