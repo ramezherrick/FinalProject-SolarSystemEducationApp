@@ -521,6 +521,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 }
             }
 
+            ViewBag.CurrentStudent = currentStudent;
+
             List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
 
             return View(myGrades);
