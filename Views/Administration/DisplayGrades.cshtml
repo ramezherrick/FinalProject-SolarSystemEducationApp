@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayGrades";
+}
+
+<h1>DisplayGrades</h1>
+
+@model List<Grades>
+<table class="table">
+    <tr>
+        
+        <th>grade</th>
+    </tr>
+    @foreach (Grades g in Model)
+    {
+        <tr>
+            <td>@g.Grade</td>
+            <td><a class="btn btn-primary" href="../Administration/DeleteGrade?id=@g.Id">Delete grade</a></td>
+        </tr>
+    }
+
+</table>

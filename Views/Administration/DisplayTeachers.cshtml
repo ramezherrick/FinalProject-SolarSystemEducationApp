@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayTeachers";
+}
+
+
+<h1>DisplayTeachers</h1>
+@model List<Teachers>
+<table class="table">
+    <tr>
+        <th>Student Name</th>
+    </tr>
+    @foreach (Teachers t in Model)
+    {
+        <tr>
+            <td>@t.FirstName @t.LastName</td>
+            <td><a class="btn btn-primary" href="../Administration/DeleteTeacher?id=@t.Id">Delete student</a></td>
+        </tr>
+    }
+
+</table>
+

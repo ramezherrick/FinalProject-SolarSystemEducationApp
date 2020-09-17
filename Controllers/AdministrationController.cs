@@ -203,12 +203,37 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             var usersList = _context.AspNetUsers.ToList();
             return View(usersList);
         }
+        public IActionResult DisplayTeachers()
+        {
+            var teacherList = _context.Teachers.ToList();
+            return View(teacherList);
+        }
+        public IActionResult DisplayGrades()
+        {
+            var gradesList = _context.Grades.ToList();
+            return View(gradesList);
+        }
+        public IActionResult DisplayClassrooms()
+        {
+            var classroomsList = _context.Classrooms.ToList();
+            return View(classroomsList);
+        }
         public IActionResult DeleteStudent( int id)
         {
             var foundStudent = _context.Students.Find(id);
             if (foundStudent != null)
             {
                 _context.Students.Remove(foundStudent);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteTeacher(int id)
+        {
+            var foundTeacher = _context.Teachers.Find(id);
+            if (foundTeacher != null)
+            {
+                _context.Teachers.Remove(foundTeacher);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -220,6 +245,29 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             if(foundUser !=null)
             {
                 _context.AspNetUsers.Remove(foundUser);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteClassroom(int id)
+        {
+            var foundClassroom = _context.Classrooms.Find(id);
+
+            if (foundClassroom != null)
+            {
+                _context.Classrooms.Remove(foundClassroom);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+
+        }
+        public IActionResult DeleteGrade(int id)
+        {
+            var foundGrade = _context.Grades.Find(id);
+
+            if (foundGrade != null)
+            {
+                _context.Grades.Remove(foundGrade);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");
