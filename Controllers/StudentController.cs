@@ -62,7 +62,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(fourPlanetsList);
         }
-
         [HttpPost]
         public async Task<IActionResult> TakePlanetsQuiz(List<string> answers, string englishName)
         {
@@ -217,14 +216,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return planetsList;
         }
-
-
         public async Task<IActionResult> DisplayBodies()
         {
             var allInfo = await _solarDal.GetBody();
             return View(allInfo);
         }
-
         public async Task<IActionResult> BodyDetails(string id)
         {
             List<Body> bodiesList = await _solarDal.GetBody();
@@ -249,7 +245,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             ViewBag.body = search[randomStarIndex];
             ViewBag.randomStarIndex = randomStarIndex;
-
 
             _context.Questions.ToList();
             var quizes = _context.Quizes.ToList();
@@ -302,7 +297,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             
             return View("BoolResults", g);
         }
-
         public void SaveAverageGrade()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -357,7 +351,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context.Classrooms.Update(cRoom);
             _context.SaveChanges(); 
         }
-
         [HttpGet]
         public async Task<IActionResult> TakeMoonsQuiz()
         {
@@ -386,7 +379,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(fourMoonsList);
         }
-
         [HttpPost]
         public async Task<IActionResult> TakeMoonsQuiz(List<string> answers, string englishName)
         {
@@ -442,7 +434,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return RedirectToAction("ResultsMoonsQuiz", new { g = grade, answered = answers, engname = englishName });
         }
-
         public async Task<IActionResult> ResultsMoonsQuiz(double g, List<string> answered, string engname)
         {
             //find logged in userid 
@@ -496,7 +487,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.englishname = engname;
             return View(answered);
         }
-
         public async Task<List<Body>> CreateMoonsListFromAPIAsync()
         {
             //access API get a list of all bodies in the api
@@ -515,7 +505,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return moonsList;
         }
-
         public IActionResult MyGrades()
         {
             _context.Quizes.ToList();
@@ -532,11 +521,23 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 }
             }
 
+            ViewBag.CurrentStudent = currentStudent;
+
             List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
 
             return View(myGrades);
         }
+        public IActionResult ChoseAQuize()
+        {
+            return View(); 
+        }
+        public IActionResult ClassLeaderBoard()
+        {
+            //_context.Teachers.ToList();
+            List<Classrooms> allClassesDb = _context.Classrooms.ToList();
+            List<Classrooms> classroom = _context.Classrooms.OrderBy(x => x.ClassAvg).ToList();
+
+            return View(classroom);
+        }
     }
 }
-
-
