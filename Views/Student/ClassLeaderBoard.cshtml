@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "ClassLeaderBoard";
+}
+
+<h1>LeaderBoard</h1>
+
+@model List<Classrooms>
+
+<h2>Classroom leader board</h2>
+<table class="table">
+    <tr>
+        <th>Teacher Name</th>
+        <th>Class Name</th>
+        <th>Class Average</th>
+
+    </tr>
+    @foreach (Classrooms cr in Model)
+    {
+        if (cr.ClassAvg != null)
+        {
+            <tr>
+                @if (cr.Teacher != null)
+                {
+                    <td>@cr.Teacher.FirstName @cr.Teacher.LastName</td>
+                }
+                <td>@cr.ClassName</td>
+                @if (cr.ClassAvg != null)
+                {
+                    <td>@cr.ClassAvg</td>
+                }
+            </tr>
+        }
+
+
+    }
+</table>
