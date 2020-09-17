@@ -191,37 +191,50 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
-            PrincipleViewModel students= new PrincipleViewModel();
-            students.studentsWithDifficulty = _context.Students.Where(x => x.AverageGrade < 70).ToList();
-            students.studentsOnDeansList = _context.Students.Where(x => x.AverageGrade > 90).ToList();
-            return View(students);
-        }
+            PrincipleViewModel principle= new PrincipleViewModel();
 
+            //Displaying the Deans list and the students who needs support
+            principle.studentsWithDifficulty = _context.Students.Where(x => x.AverageGrade < 70).ToList();
+            principle.studentsOnDeansList = _context.Students.Where(x => x.AverageGrade > 80).ToList();
+
+        
+            principle.classrooms = _context.Classrooms.Where(x => x.Teacher != null).ToList();
+            principle.students = _context.Students.ToList();
+            principle.teachers = _context.Teachers.ToList();
+
+            return View(principle);
+        }
+        [Authorize(Roles = "admin")]
         public IActionResult DisplayStudents()
         {
             var studentList = _context.Students.ToList();
             return View(studentList);
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DisplayUsers()
         {
             var usersList = _context.AspNetUsers.ToList();
             return View(usersList);
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DisplayTeachers()
         {
             var teacherList = _context.Teachers.ToList();
             return View(teacherList);
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DisplayGrades()
         {
             var gradesList = _context.Grades.ToList();
             return View(gradesList);
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DisplayClassrooms()
         {
             var classroomsList = _context.Classrooms.ToList();
             return View(classroomsList);
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteStudent( int id)
         {
             var foundStudent = _context.Students.Find(id);
@@ -232,6 +245,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteTeacher(int id)
         {
             var foundTeacher = _context.Teachers.Find(id);
@@ -242,6 +256,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteUser(string id)
         {
             var foundUser = _context.AspNetUsers.Find(id);
@@ -253,6 +268,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteClassroom(int id)
         {
             var foundClassroom = _context.Classrooms.Find(id);
@@ -265,6 +281,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return RedirectToAction("Index");
 
         }
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteGrade(int id)
         {
             var foundGrade = _context.Grades.Find(id);
