@@ -527,7 +527,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(myGrades);
         }
-        public IActionResult ChoseAQuiz()
+        public IActionResult ChoseAQuize()
         {
             return View(); 
         }
