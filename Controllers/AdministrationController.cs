@@ -188,9 +188,13 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 return RedirectToAction("AssignAsStudent");
             }
         }
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
-            return View();
+            PrincipleViewModel students= new PrincipleViewModel();
+            students.studentsWithDifficulty = _context.Students.Where(x => x.AverageGrade < 70).ToList();
+            students.studentsOnDeansList = _context.Students.Where(x => x.AverageGrade > 90).ToList();
+            return View(students);
         }
 
         public IActionResult DisplayStudents()
