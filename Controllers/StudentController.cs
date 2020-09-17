@@ -535,7 +535,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             //_context.Teachers.ToList();
             List<Classrooms> allClassesDb = _context.Classrooms.ToList();
-            List<Classrooms> classroom = _context.Classrooms.OrderBy(x => x.ClassAvg).ToList();
+            List<Classrooms> classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
 
             return View(classroom);
         }
