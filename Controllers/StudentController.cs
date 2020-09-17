@@ -17,14 +17,10 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context = context;
             _solarDal = new SolarDAL();
         }
-
-
         public IActionResult Index()
         {
             return View();
         }
-
-
         [HttpGet]
         public async Task<IActionResult> TakePlanetsQuiz()
         {
@@ -197,6 +193,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.questions = questions;
             ViewBag.correctanswers = correctAnswers;
             ViewBag.englishname = engname;
+            SaveAverageGrade(); 
             return View(answered);
         }
         public async Task<List<Body>> CreatePlanetsListFromAPIAsync()
@@ -502,6 +499,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.questions = questions;
             ViewBag.correctanswers = correctAnswers;
             ViewBag.englishname = engname;
+            SaveAverageGrade(); 
             return View(answered);
         }
         public async Task<List<Body>> CreateMoonsListFromAPIAsync()
