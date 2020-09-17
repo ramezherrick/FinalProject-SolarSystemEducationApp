@@ -170,16 +170,16 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             {
                 numberOfMoons = testedPlanet.moons.Length;
             }
-            if (testedPlanet.discoveredBy.Length < 1)
+            if (testedPlanet.discoveredBy.Length < 1 || testedPlanet.discoveredBy == null)
             {
                 testedPlanet.discoveredBy = "Unknown";
             }
-            if (testedPlanet.discoveryDate.Length < 1)
+            if (testedPlanet.discoveryDate.Length < 1 || testedPlanet.discoveryDate == null)
             {
                 testedPlanet.discoveryDate = "Unknown";
             }
 
-            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massExponent.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), testedPlanet.moons.Count().ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
+            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massExponent.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), numberOfMoons.ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
             int studentId = students[0].Id;
             //planets quiz
             int quizId = 2;
@@ -552,7 +552,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             //_context.Teachers.ToList();
             List<Classrooms> allClassesDb = _context.Classrooms.ToList();
-            List<Classrooms> classroom = _context.Classrooms.OrderBy(x => x.ClassAvg).ToList();
+            List<Classrooms> classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
 
             return View(classroom);
         }
