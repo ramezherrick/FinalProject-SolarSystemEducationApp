@@ -183,15 +183,18 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(currentClass);
         }
-
         public IActionResult LeaderBoard()
         {
+            ClassroomsViewModel newClassroom = new ClassroomsViewModel(); 
+
             _context.Teachers.ToList();
-            List<Classrooms> allClassesDb = _context.Classrooms.ToList();
+            newClassroom.Classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
+            
+            newClassroom.QuizAverage1 = AverageQuizGrade(1);
+            newClassroom.QuizAverage2 = AverageQuizGrade(2);
+            newClassroom.QuizAverage3 = AverageQuizGrade(3);
 
-            List<Classrooms> classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
-
-         return View(classroom);
+            return View(newClassroom);
         }
 
         public IActionResult StudentGrades(int id)
@@ -214,6 +217,20 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
 
             return View(myGrades);
+        }
+        
+        public double? AverageQuizGrade(int? qid)
+        {
+            List<Grades> grades = _context.Grades.Where(x => x.QuizId == qid).ToList();
+
+            double? points = 0;
+            foreach (Grades grade in grades)
+            {
+                points += grade.Grade;
+            }
+            int count = grades.Count;
+            double? averageGrade = Math.Round((double)points / count);
+            return averageGrade; 
         }
     }
 }
