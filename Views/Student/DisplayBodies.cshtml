@@ -5,39 +5,73 @@
 }
 
 @{ string bodyName = "";}
-@{ int count = 1;}
 <h2>Click a name to learn more about that Planet or Moon!</h2>
 <br /><br />
 <h3>Planets</h3>
-@foreach (Body b in Model)
-{
-    if (b.isPlanet == true)
+
+@*<button onclick="showMoons()">Show moons</button>
+<ul>
+    <li>
+        parts
+        <ul id="planetMoons">
+            <li>boobs</li>
+            <li>butts</li>
+            <li>farts</li>
+        </ul>
+    </li>
+</ul>*@
+
+<ul style="font-size:larger">
+    @{int count2 = 0;}
+    @foreach (Body planet in Model)
     {
-        if (b.englishName == "" || b.englishName == null)
-        {
-            bodyName = b.name;
-        }
-        else
-        {
-            bodyName = b.englishName;
-        }
+        int count = 1;
 
-        if (count % 7 == 0)
+        if (planet.isPlanet == true)
         {
-            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
-            <hr width="70%" align="left" />
-        }
-        else
-        {
-            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        }
+            if (planet.englishName == "" || planet.englishName == null)
+            {
+                bodyName = planet.name;
+            }
+            else
+            {
+                bodyName = planet.englishName;
+            }
+            <li>
+                <a href="../Student/BodyDetails?id=@planet.id">@bodyName</a> <br />
+                @if (planet.moons != null)
+                {
+                    <button onclick="showMoons(@count2)" class="btn-sm btn btn-dark">Show moons</button>
+                }
+                
 
-        count++;
+                <ul id="planetMoons_@count2" style="display:none">
+                    @{count2++;}
+                    
+                    @foreach (Body moon in Model)
+                    {
+                        if (moon.isPlanet == false && moon.aroundPlanet != null && moon.aroundPlanet.planet.ToLower() == planet.id.ToLower() && moon.aroundPlanet.planet != "")
+                        {
+                            if (moon.englishName == "" || moon.englishName == null)
+                            {
+                                bodyName = moon.name;
+                            }
+                            else
+                            {
+                                bodyName = moon.englishName;
+                            }
+                            <li>@count) <a href="../Student/BodyDetails?id=@moon.id">@bodyName</a></li>
+                            count++;
+                        }
+                    }
+                </ul>
+            </li>
+            
+        }
     }
-}
-<br /><br /><br />
+</ul>
+@*<br /><br /><br />
 <h3>Moons</h3>
-@{ count = 1;}
 
 @foreach (Body b in Model)
 {
@@ -51,17 +85,17 @@
         {
             bodyName = b.englishName;
         }
-
-        if (count % 7 == 0)
-        {
             <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
-            <hr width="70%" align="left" />
-        }
-        else
-        {
-            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        }
-
-        count++;
     }
-}
+}*@
+
+<script>
+    function showMoons(count2) {
+        var x = document.getElementById("planetMoons_" + count2);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

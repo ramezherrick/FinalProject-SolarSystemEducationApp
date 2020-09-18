@@ -15,5 +15,9 @@ namespace FinalProject_SolarSystemEducationApp.Models
 
         public List<Students> students { get; set; }
         public List<Teachers> teachers { get; set; }
+
+        public List<Grades> grades { get; set; }
+
+        public List<AspNetRoles> roles { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -94,7 +95,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
                 await _userManager.AddToRoleAsync(user, "Teacher");
 
-                return RedirectToAction("index", "home");
+                return RedirectToAction("Index", "Home");
             }
             return View("index");
         }
@@ -207,6 +208,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.classrooms = _context.Classrooms.Where(x => x.Teacher != null).ToList();
             principle.students = _context.Students.ToList();
             principle.teachers = _context.Teachers.ToList();
+            principle.grades = _context.Grades.ToList();
+            
 
             return View(principle);
         }
