@@ -3,11 +3,5 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Your Classrooms</h1>
+<h1>Welcome! Use this app to manage your classes.</h1>
 
-<ul>
-    @foreach (Classrooms c in Model)
-    {
-        <li><a href="../Teacher/ClassroomView?id=@c.Id">@c.ClassName</a></li>
-    }
-</ul>
