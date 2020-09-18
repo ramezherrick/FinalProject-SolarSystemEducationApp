@@ -201,6 +201,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.classrooms = _context.Classrooms.Where(x => x.Teacher != null).ToList();
             principle.students = _context.Students.ToList();
             principle.teachers = _context.Teachers.ToList();
+            principle.grades = _context.Grades.ToList();
+            
 
             return View(principle);
         }
