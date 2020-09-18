@@ -143,10 +143,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         //When someone new registers, we need to assign him/her into a role that is chosen by a user and a password if
         //the role is an Admin or a Teacher
         [HttpGet]
-        public IActionResult AssignARole()
+        public IActionResult AssignARole(string msg)
         {
             var roles = _context.AspNetRoles.ToList();
             ViewBag.classrooms = _context.Classrooms.ToList();
+            ViewBag.ErrorMessage = msg; 
             return View(roles);
         }
         [HttpPost]
@@ -172,7 +173,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             {
                 return RedirectToAction("AssignAsAdmin");
             }
-            else
+            else if(password == null || password == "" && role == "Student")
             {
                 //1-creating a new student object
                 //2- get Fname and Lname and ClassroomId from the userform
@@ -186,6 +187,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 _context.Students.Add(student);
                 _context.SaveChanges();
                 return RedirectToAction("AssignAsStudent");
+            }
+            else
+            {
+                string message = "Please enter valid information.";
+                return RedirectToAction("AssignARole", new { msg = message}); 
             }
         }
         [Authorize(Roles = "admin")]
