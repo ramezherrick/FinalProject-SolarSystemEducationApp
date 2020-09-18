@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -231,6 +232,23 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             int count = grades.Count;
             double? averageGrade = Math.Round((double)points / count);
             return averageGrade; 
+        }
+        public IActionResult MyClassroom()
+        {
+            _context.Quizes.ToList();
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Teachers> teacher = _context.Teachers.Where(x => x.UserId == id).ToList();
+
+            Teachers teach = new Teachers();
+
+            foreach (Teachers t in teacher)
+            {
+                teach = t; 
+            }
+
+            List<Classrooms> classroomList = _context.Classrooms.Where(x => x.TeacherId == teach.Id).ToList();
+
+            return View(classroomList);
         }
     }
 }
