@@ -6,16 +6,16 @@
 <h1>New User Initiation</h1>
 @model List<AspNetRoles>
 
-
+<h1 style="color:firebrick">@ViewBag.ErrorMessage</h1>
 <form action="../Administration/AssignARole" method="post">
     <p>
         First Name<br />
-        <input type="text" name="FirstName" required />
+        <input type="text" name="FirstName" required pattern="[A-Za-z]{2,15}"/>
     </p>
 
     <p>
         Last Name<br />
-        <input type="text" name="LastName" required />
+        <input type="text" name="LastName" required pattern="[A-Za-z]{2,15}"/>
     </p>
 
     <p>

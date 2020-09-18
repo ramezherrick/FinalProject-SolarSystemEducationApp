@@ -27,6 +27,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Checking to see if user is currently logged in. 
             bool isAuthenticated = User.Identity.IsAuthenticated;
 
             if (isAuthenticated)

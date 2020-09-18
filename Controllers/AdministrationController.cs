@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FinalProject_SolarSystemEducationApp.Areas.Identity.Pages.Account;
 using FinalProject_SolarSystemEducationApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -22,14 +23,15 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly SolarSystemDbContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SolarSystemDbContext context)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, SolarSystemDbContext context, SignInManager<IdentityUser> signInManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _roleManager = roleManager;
             _userManager = userManager;
             _context = context;
+            _signInManager = signInManager;
         }
 
         [Authorize(Roles = "admin")]
@@ -71,13 +73,15 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
                 await _userManager.AddToRoleAsync(user, "Student");
 
-                return RedirectToAction("index", "home");
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Student");
             }
             return View("index");
         }
 
         public async Task<IActionResult> AssignAsTeacher()
         {
+            
             if (ModelState.IsValid)
             {
                 //get logged in user id
@@ -95,7 +99,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
                 await _userManager.AddToRoleAsync(user, "Teacher");
 
-                return RedirectToAction("Index", "Home");
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Teacher");
             }
             return View("index");
         }
@@ -119,7 +124,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
                 await _userManager.AddToRoleAsync(user, "admin");
 
-                return RedirectToAction("index", "home");
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Administration");
             }
             return View("index");
         }
@@ -144,10 +150,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         //When someone new registers, we need to assign him/her into a role that is chosen by a user and a password if
         //the role is an Admin or a Teacher
         [HttpGet]
-        public IActionResult AssignARole()
+        public IActionResult AssignARole(string msg)
         {
             var roles = _context.AspNetRoles.ToList();
             ViewBag.classrooms = _context.Classrooms.ToList();
+            ViewBag.ErrorMessage = msg; 
             return View(roles);
         }
         [HttpPost]
@@ -173,7 +180,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             {
                 return RedirectToAction("AssignAsAdmin");
             }
-            else
+            else if(password == null || password == "" && role == "Student")
             {
                 //1-creating a new student object
                 //2- get Fname and Lname and ClassroomId from the userform
@@ -187,6 +194,11 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 _context.Students.Add(student);
                 _context.SaveChanges();
                 return RedirectToAction("AssignAsStudent");
+            }
+            else
+            {
+                string message = "Please enter valid information.";
+                return RedirectToAction("AssignARole", new { msg = message}); 
             }
         }
         [Authorize(Roles = "admin")]
