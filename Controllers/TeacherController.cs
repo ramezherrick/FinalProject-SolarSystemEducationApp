@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -183,15 +184,18 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(currentClass);
         }
-
         public IActionResult LeaderBoard()
         {
+            ClassroomsViewModel newClassroom = new ClassroomsViewModel(); 
+
             _context.Teachers.ToList();
-            List<Classrooms> allClassesDb = _context.Classrooms.ToList();
+            newClassroom.Classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
+            
+            newClassroom.QuizAverage1 = AverageQuizGrade(1);
+            newClassroom.QuizAverage2 = AverageQuizGrade(2);
+            newClassroom.QuizAverage3 = AverageQuizGrade(3);
 
-            List<Classrooms> classroom = _context.Classrooms.OrderByDescending(x => x.ClassAvg).ToList();
-
-         return View(classroom);
+            return View(newClassroom);
         }
 
         public IActionResult StudentGrades(int id)
@@ -214,6 +218,37 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
 
             return View(myGrades);
+        }
+        
+        public double? AverageQuizGrade(int? qid)
+        {
+            List<Grades> grades = _context.Grades.Where(x => x.QuizId == qid).ToList();
+
+            double? points = 0;
+            foreach (Grades grade in grades)
+            {
+                points += grade.Grade;
+            }
+            int count = grades.Count;
+            double? averageGrade = Math.Round((double)points / count);
+            return averageGrade; 
+        }
+        public IActionResult MyClassroom()
+        {
+            _context.Quizes.ToList();
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Teachers> teacher = _context.Teachers.Where(x => x.UserId == id).ToList();
+
+            Teachers teach = new Teachers();
+
+            foreach (Teachers t in teacher)
+            {
+                teach = t; 
+            }
+
+            List<Classrooms> classroomList = _context.Classrooms.Where(x => x.TeacherId == teach.Id).ToList();
+
+            return View(classroomList);
         }
     }
 }

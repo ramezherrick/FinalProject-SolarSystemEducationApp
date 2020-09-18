@@ -5,7 +5,7 @@
 
 <h1>LeaderBoard</h1>
 
-@model List<Classrooms>
+@model ClassroomsViewModel
 
 <h2>Classroom leader board</h2>
 <table class="table">
@@ -15,7 +15,7 @@
         <th>Class Average</th>
 
     </tr>
-    @foreach (Classrooms cr in Model)
+    @foreach (Classrooms cr in Model.Classroom)
     {
         if (cr.ClassAvg != null)
         {
@@ -36,4 +36,16 @@
     }
 </table>
 
-<
+
+<table class="table">
+    <tr>
+        <th>Quiz 1</th>
+        <th>Quiz 2</th>
+        <th>Quiz 3</th>
+    </tr>
+    <tr>
+        <td>@Model.QuizAverage1</td>
+        <td>@Model.QuizAverage2</td>
+        <td>@Model.QuizAverage3</td>
+    </tr>
+</table>

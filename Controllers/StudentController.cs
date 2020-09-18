@@ -17,14 +17,10 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context = context;
             _solarDal = new SolarDAL();
         }
-
-
         public IActionResult Index()
         {
             return View();
         }
-
-
         [HttpGet]
         public async Task<IActionResult> TakePlanetsQuiz()
         {
@@ -133,7 +129,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             double total = numberOfCorrectAnswers;
 
 
-            double grade = (total / 6) * 100;
+            double grade = Math.Round((total / 6) * 100);
 
 
             return RedirectToAction("ResultsPlanetsQuiz", new { g = grade, answered = answers, engname = englishName });
@@ -185,7 +181,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             int quizId = 2;
 
             Grades newGrade = new Grades();
-
+            Math.Round(g); 
             newGrade.StudentId = studentId;
             newGrade.QuizId = quizId;
             newGrade.Grade = g;
@@ -197,6 +193,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.questions = questions;
             ViewBag.correctanswers = correctAnswers;
             ViewBag.englishname = engname;
+            SaveAverageGrade(); 
             return View(answered);
         }
         public async Task<List<Body>> CreatePlanetsListFromAPIAsync()
@@ -330,9 +327,9 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 fullPoints += g.Grade;
                 count++;
             }
-            double? newGrade = (fullPoints / count);
-
+            double? newGrade = Math.Round((double)fullPoints / count);
             student.AverageGrade = newGrade;
+
 
             _context.Entry(student).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Students.Update(student);
@@ -361,7 +358,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                     }
                 }
             }
-            double? classGrade = (points / count);
+            double? classGrade = Math.Round((double)points / count);
             cRoom.ClassAvg = classGrade;
 
             _context.Entry(cRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -447,7 +444,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
 
             double total = numberOfCorrectAnswers;
-            double grade = (total / 4) * 100;
+            double grade = Math.Round(total / 4) * 100;
 
             return RedirectToAction("ResultsMoonsQuiz", new { g = grade, answered = answers, engname = englishName });
         }
@@ -490,6 +487,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             int quizId = 3;
 
             Grades newGrade = new Grades();
+            Math.Round(g); 
 
             newGrade.StudentId = studentId;
             newGrade.QuizId = quizId;
@@ -502,6 +500,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             ViewBag.questions = questions;
             ViewBag.correctanswers = correctAnswers;
             ViewBag.englishname = engname;
+            SaveAverageGrade(); 
             return View(answered);
         }
         public async Task<List<Body>> CreateMoonsListFromAPIAsync()
@@ -537,9 +536,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                     currentStudent = s;
                 }
             }
-
             ViewBag.CurrentStudent = currentStudent;
-
             List<Grades> myGrades = _context.Grades.Where(x => x.StudentId == currentStudent.Id).ToList();
 
             return View(myGrades);
@@ -556,5 +553,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(classroom);
         }
+        
     }
 }
