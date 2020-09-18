@@ -444,7 +444,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
 
             double total = numberOfCorrectAnswers;
-            double grade = Math.Round(total / 4) * 100;
+            double grade = Math.Round((total / 4) * 100);
 
             return RedirectToAction("ResultsMoonsQuiz", new { g = grade, answered = answers, engname = englishName });
         }
