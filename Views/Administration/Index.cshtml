@@ -2,11 +2,92 @@
 @{
     ViewData["Title"] = "Index";
 }
+@model PrincipleViewModel
 
-    <h1>You are an Admin! YOU HAVE THE POWER</h1>
 
 <a class="btn btn-primary" href="../Administration/DisplayStudents">Display Students</a>
 <a class="btn btn-primary" href="../Administration/DisplayUsers">Display Users</a>
 <a class="btn btn-primary" href="../Administration/DisplayTeachers">Display Teachers</a>
 <a class="btn btn-primary" href="../Administration/DisplayClassrooms">Display Classrooms</a>
 <a class="btn btn-primary" href="../Administration/DisplayGrades">Display Grades</a>
+<br />
+<br />
+
+
+<h4>Organization Chart</h4>
+<table class="table">
+    <tr>
+        <th>Teacher Name</th>
+        <th>Classes</th>
+        <th>Students</th>
+    </tr>
+    @foreach (Teachers t in Model.teachers)
+    {
+        <tr>
+            <td>@t.FirstName @t.LastName</td>
+            <td>
+                @foreach (Classrooms c in Model.classrooms)
+                {
+                    if (c.Teacher.FirstName == t.FirstName)
+                    {
+                        @c.ClassName<br />
+                    }
+                }
+            </td>
+            <td>
+                @foreach (Students s in Model.students)
+                {
+                    if(s.Classroom.Teacher == t)
+                    {
+                      <p>  @s.FirstName @s.LastName (Enrolled in @s.Classroom.ClassName)</p><br />
+                    }
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<br />
+<br />
+<h4>Dean's List</h4>
+
+<table class="table">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Average Grade</th>
+    </tr>
+
+    @foreach (Students cvm in Model.studentsOnDeansList)
+    {
+        <tr>
+            <td>@cvm.FirstName</td>
+            <td>@cvm.LastName</td>
+            <td>@cvm.AverageGrade</td>
+
+        </tr>
+    }
+</table>
+<br />
+<br />
+<h4>List of students with difficulty</h4>
+
+<table class="table">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Average Grade</th>
+    </tr>
+
+    @foreach (Students cvm in Model.studentsWithDifficulty)
+    {
+        <tr>
+            <td>@cvm.FirstName</td>
+            <td>@cvm.LastName</td>
+            <td>@cvm.AverageGrade</td>
+
+        </tr>
+    }
+</table>
+
+
