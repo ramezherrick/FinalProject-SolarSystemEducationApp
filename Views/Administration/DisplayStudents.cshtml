@@ -4,17 +4,25 @@
 }
 
 <h1>DisplayStudents</h1>
-@model List<Students>
+@model PrincipleViewModel
 <table class="table">
     <tr>
         <th>Student Name</th>
     </tr>
-    @foreach (Students s in Model)
-    {
-        <tr>
-            <td>@s.FirstName @s.LastName</td>
-            <td><a class="btn btn-primary" href="../Administration/DeleteStudent?id=@s.Id">Delete student</a></td>
-        </tr>
-    }
+   
 
-</table>
+        @foreach (Students s in Model.students)
+        {
+            <tr>
+                <td>
+                  
+                        @s.FirstName @s.LastName <br />
+                   
+                </td>
+                <td><a class="btn btn-primary" href="../Administration/DeleteStudent?id=@s.Id">Delete student</a></td>
+                
+            </tr>
+        }
+
+  
+    </table>

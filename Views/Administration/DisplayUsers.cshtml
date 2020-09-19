@@ -3,19 +3,26 @@
     ViewData["Title"] = "DisplayStudents";
 }
 
-<h1>DisplayStudents</h1>
-@model List<AspNetUsers>
+<h1>Display users</h1>
+@model PrincipleViewModel
 <table class="table">
     <tr>
         <th>Email</th>
-        <th>User Name</th>
+     
     </tr>
-    @foreach (AspNetUsers a in Model)
+    @foreach (AspNetUsers a in Model.users)
     {
         <tr>
             <td>@a.Email</td>
-            <td>@a.UserName</td>
-            <td><a class="btn btn-primary" href="../Administration/DeleteUser?id=@a.Id">Delete Users</a></td>
+            @*@foreach (AspNetUserRoles ur in Model.userRoles)
+            {
+                if(a.Id == ur.UserId)
+                {
+                    <td>@ur.RoleId</td>
+                }
+            }*@
+
+            <td><a class="btn btn-primary" href="../Administration/DeleteUser?id=@a.Id">Remove Users</a></td>
         </tr>
     }
 
