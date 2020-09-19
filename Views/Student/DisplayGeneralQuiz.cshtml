@@ -5,19 +5,18 @@
 
 @model List<Questionsbank>
 
-<h1>Your Star is @ViewBag.body.englishName</h1>
+<h1>@ViewBag.body.englishName</h1>
 <form action="../Student/DisplayGeneralQuiz" method="post">
     @foreach (Quizes quiz in ViewBag.Quizes)
     {
         if (quiz.Id == 1)
         {
-            <h2>@quiz.QuizType</h2>
 
             @foreach (Questionsbank q in Model)
             {
                 if (q.QuizId == 1)
                 {
-                    <h6>@q.Question.Question</h6>
+                    <h3>@q.Question.Question</h3>
                 }
             }
         }
@@ -25,8 +24,10 @@
     }
     <input type="radio" id="true" name="searchtype" value="bool" />
     <label for="true">True</label>
+    <br />
     <input type="radio" id="false" name="searchtype" value="bool" />
     <label for="false">False</label>
+    <br /> 
     <input type="submit" value="Submit" />
     <input type="number" name="randomStarIndex" value="@ViewBag.randomStarIndex" hidden />
 </form>

@@ -8,10 +8,10 @@
 @model List<Classrooms>
 
 <h2>Classroom leader board</h2>
-<table class="table">
+<table class="table table-bordered">
     <tr>
-        <th>Class Name</th>
-        <th>Class Average</th>
+        <th class="text-center">Class Name</th>
+        <th class="text-center">Class Average</th>
 
     </tr>
     @foreach (Classrooms cr in Model)
@@ -19,10 +19,10 @@
         if (cr.ClassAvg != null)
         {
             <tr>
-                <td>@cr.ClassName</td>
+                <td class="text-center">@cr.ClassName</td>
                 @if (cr.ClassAvg != null)
                 {
-                    <td>@cr.ClassAvg</td>
+                    <td class="text-center">@cr.ClassAvg</td>
                 }
             </tr>
         }
