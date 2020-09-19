@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject_SolarSystemEducationApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalProject_SolarSystemEducationApp.Controllers
@@ -14,10 +15,12 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
     {
         private readonly SolarSystemDbContext _context;
         private readonly SolarDAL _solarDal;
-        public StudentController(SolarSystemDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public StudentController(SolarSystemDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _solarDal = new SolarDAL();
+            _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {
@@ -556,6 +559,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(classroom);
         }
-        
+
+
     }
 }

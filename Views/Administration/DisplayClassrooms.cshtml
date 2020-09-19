@@ -7,13 +7,13 @@
 @model List<Classrooms>
 <table class="table">
     <tr>
-        <th>Student Name</th>
+        <th>Class Name</th>
     </tr>
     @foreach (Classrooms c in Model)
     {
         <tr>
             <td>@c.ClassName</td>
-            <td><a class="btn btn-primary" href="../Administration/DeleteClassroom?id=@c.Id">Delete student</a></td>
+            <td><a class="btn btn-primary" href="../Administration/DeleteClassroom?id=@c.Id">Remove Class</a></td>
         </tr>
     }
 

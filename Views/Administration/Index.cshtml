@@ -4,26 +4,51 @@
 }
 @model PrincipleViewModel
 
+@{ int count = 0; }
 
-<a class="btn btn-primary" href="../Administration/DisplayStudents">Display Students</a>
-<a class="btn btn-primary" href="../Administration/DisplayUsers">Display Users</a>
-<a class="btn btn-primary" href="../Administration/DisplayTeachers">Display Teachers</a>
-<a class="btn btn-primary" href="../Administration/DisplayClassrooms">Display Classrooms</a>
-<a class="btn btn-primary" href="../Administration/DisplayGrades">Display Grades</a>
+<h4>Head Count</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>Identity Role Name</th>
+        <th>Head Count</th>
+    </tr>
+    @foreach (AspNetRoles r in Model.roles)
+    {
+<tr>
+    <td>@r.Name</td>
+    @foreach (AspNetUserRoles userRole in Model.userRoles)
+    {
+        @if (userRole.RoleId == r.Id)
+        {
+            count++;
+        }
+    }
+
+    <td>@count</td>
+    @{count = 0;}
+</tr>
+    }
+    <tr>
+        <td>Total Head Count</td>
+        <td>@Model.users.Count</td>
+    </tr>
+
+</table>
 <br />
 <br />
-
 
 <h4>Organization Chart</h4>
-<table class="table">
-    <tr>
+<table class="table table-bordered">
+    <tr class="d-table-row">
         <th>Teacher Name</th>
-        <th>Classes</th>
+        <th>Teacher Class</th>
         <th>Students</th>
+        <th>Student Class</th>
+        <th>Average Grade</th>
     </tr>
     @foreach (Teachers t in Model.teachers)
     {
-        <tr>
+        <tr class="d-table-row">
             <td>@t.FirstName @t.LastName</td>
             <td>
                 @foreach (Classrooms c in Model.classrooms)
@@ -37,9 +62,27 @@
             <td>
                 @foreach (Students s in Model.students)
                 {
-                    if(s.Classroom.Teacher == t)
+                    if (s.Classroom.Teacher == t)
                     {
-                      <p>  @s.FirstName @s.LastName (Enrolled in @s.Classroom.ClassName)</p><br />
+                        <p>@s.FirstName @s.LastName </p><br />
+                    }
+                }
+            </td>
+            <td>
+                @foreach (Students s in Model.students)
+                {
+                    if (s.Classroom.Teacher == t)
+                    {
+                        <p>@s.Classroom.ClassName </p><br />
+                    }
+                }
+            </td>
+            <td>
+                @foreach (Students s in Model.students)
+                {
+                    if (s.Classroom.Teacher == t)
+                    {
+                        <p>@s.AverageGrade </p><br />
                     }
                 }
             </td>
@@ -51,7 +94,7 @@
 <br />
 <h4>Dean's List</h4>
 
-<table class="table">
+<table class="table table-bordered">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -72,7 +115,7 @@
 <br />
 <h4>List of students with difficulty</h4>
 
-<table class="table">
+<table class="table table-bordered">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -84,7 +127,7 @@
         <tr>
             <td>@cvm.FirstName</td>
             <td>@cvm.LastName</td>
-            <td>@cvm.AverageGrade</td>
+            <td style="color:darkred">@cvm.AverageGrade</td>
 
         </tr>
     }

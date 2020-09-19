@@ -207,29 +207,36 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             PrincipleViewModel principle= new PrincipleViewModel();
 
             //Displaying the Deans list and the students who needs support
-            principle.studentsWithDifficulty = _context.Students.Where(x => x.AverageGrade < 70).ToList();
-            principle.studentsOnDeansList = _context.Students.Where(x => x.AverageGrade > 80).ToList();
+            principle.studentsWithDifficulty = _context.Students.Where(x => x.AverageGrade < 60).OrderBy(x=>x.AverageGrade).ToList();
+            principle.studentsOnDeansList = _context.Students.Where(x => x.AverageGrade > 80).OrderByDescending(x=>x.AverageGrade).ToList();
 
         
             principle.classrooms = _context.Classrooms.Where(x => x.Teacher != null).ToList();
             principle.students = _context.Students.ToList();
             principle.teachers = _context.Teachers.ToList();
             principle.grades = _context.Grades.ToList();
-            
+            principle.roles = _context.AspNetRoles.ToList();
+            principle.userRoles = _context.AspNetUserRoles.ToList();
+            principle.users = _context.AspNetUsers.ToList();
 
             return View(principle);
         }
         [Authorize(Roles = "admin")]
         public IActionResult DisplayStudents()
         {
-            var studentList = _context.Students.ToList();
-            return View(studentList);
+            PrincipleViewModel principal = new PrincipleViewModel();
+            principal.students = _context.Students.ToList();
+            principal.classrooms = _context.Classrooms.ToList();
+            return View(principal);
         }
         [Authorize(Roles = "admin")]
         public IActionResult DisplayUsers()
         {
-            var usersList = _context.AspNetUsers.ToList();
-            return View(usersList);
+            PrincipleViewModel principle = new PrincipleViewModel();
+            principle.users = _context.AspNetUsers.ToList();
+            principle.userRoles = _context.AspNetUserRoles.ToList();
+            //var usersList = _context.AspNetUsers.ToList();
+            return View(principle);
         }
         [Authorize(Roles = "admin")]
         public IActionResult DisplayTeachers()
@@ -240,8 +247,16 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult DisplayGrades()
         {
-            var gradesList = _context.Grades.ToList();
-            return View(gradesList);
+            PrincipleViewModel principle = new PrincipleViewModel();
+            principle.grades = _context.Grades.ToList();
+            principle.classrooms = _context.Classrooms.ToList();
+            principle.students = _context.Students.ToList();
+            return View(principle);
+        }
+        [Authorize(Roles = "admin")]
+        public IActionResult HumanResources()
+        {
+            return View();
         }
         [Authorize(Roles = "admin")]
         public IActionResult DisplayClassrooms()
