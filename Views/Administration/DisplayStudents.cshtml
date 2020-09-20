@@ -5,9 +5,10 @@
 
 <h1>DisplayStudents</h1>
 @model PrincipleViewModel
-<table class="table">
+<table class="table table-bordered">
     <tr>
         <th>Student Name</th>
+        <th>Remove Student</th>
     </tr>
    
 
@@ -15,9 +16,7 @@
         {
             <tr>
                 <td>
-                  
                         @s.FirstName @s.LastName <br />
-                   
                 </td>
                 <td><a class="btn btn-primary" href="../Administration/DeleteStudent?id=@s.Id">Delete student</a></td>
                 
