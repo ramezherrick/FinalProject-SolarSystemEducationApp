@@ -23,9 +23,10 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         }
         public IActionResult Index()
         {
-            var classRooms = _context.Classrooms.ToList();
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<Teachers> teachers = _context.Teachers.Where(x => x.UserId == id).ToList();
 
-            return View(classRooms);
+            return View(teachers);
         }
 
         //Add questions to the database in Questionsbank table

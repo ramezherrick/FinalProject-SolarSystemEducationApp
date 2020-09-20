@@ -1,7 +1,11 @@
-﻿@model List<Classrooms>
+﻿@model List<Teachers>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Welcome! Use this app to manage your classes.</h1>
+@foreach (Teachers t in Model)
+{
+    <h1>Welcome @t.FirstName @t.LastName</h1>
+}
+<h1>Use this app to manage your classes.</h1>
 

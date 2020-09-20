@@ -9,17 +9,17 @@
 
 <table class="table table-bordered">
     <tr>
-        <th>Quiz Number</th>
-        <th>Quiz Name</th>
-        <th>Grade</th>
+        <th class="text-center">Quiz Number</th>
+        <th class="text-center">Quiz Name</th>
+        <th class="text-center">Grade</th>
     </tr>
     @{ int count = 1;}
     @foreach (Grades g in Model)
     {
         <tr>
-            <td>@count</td>
-            <td>@g.Quiz.QuizType</td>
-            <td>@g.Grade</td>
+            <td class="text-center">@count</td>
+            <td class="text-center">@g.Quiz.QuizType</td>
+            <td class="text-center">@g.Grade</td>
         </tr>
         count++;
     }

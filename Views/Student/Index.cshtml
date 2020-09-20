@@ -2,8 +2,12 @@
 @{
     ViewData["Title"] = "Index";
 }
-@model Students  
-<h1>You are a Student :[ </h1>
+@model List<Students>
+@foreach (Students s in Model)
+{
+    <h1>Welcome to Class! @s.FirstName @s.LastName</h1>
+}
+<br />
 <p>Time for work. Choose what you want to do.</p>
 <br />
 <a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
