@@ -4,90 +4,91 @@
     ViewData["Title"] = "BodyDetails";
 }
 
+    <div class="contentDiv">
+        @{ string bodyName = "";}
+        @if (Model.englishName == "" || Model.englishName == null)
+        {
+            bodyName = Model.name;
+        }
+        else
+        {
+            bodyName = Model.englishName;
+        }
 
-@{ string bodyName = "";}
-@if (Model.englishName == "" || Model.englishName == null)
-{
-    bodyName = Model.name;
-}
-else
-{
-    bodyName = Model.englishName;
-}
 
+        <h1>Details for: @bodyName</h1>
+        <br />
+        @*Display Mass / account for null*@
+        @if (Model.mass == null)
+        {
+            <p><b>Mass:</b> Unknown</p>
+        }
+        else
+        {
+            <p><b>Mass:</b> @Model.mass.massValue <sup>@Model.mass.massExponent</sup></p>
+        }
 
-<h1>Details for: @bodyName</h1>
-<br />
-@*Display Mass / account for null*@
-@if (Model.mass == null)
-{
-    <p><b>Mass:</b> Unknown</p>
-}
-else
-{
-    <p><b>Mass:</b> @Model.mass.massValue <sup>@Model.mass.massExponent</sup></p>
-}
+        @*Display Volume / account for null*@
+        @if (Model.vol == null)
+        {
+            <p><b>Volume:</b> Unknown</p>
+        }
+        else
+        {
+            <p><b>Volume:</b> @Model.vol.volValue <sup>@Model.vol.volExponent</sup></p>
+        }
 
-@*Display Volume / account for null*@
-@if (Model.vol == null)
-{
-    <p><b>Volume:</b> Unknown</p>
-}
-else
-{
-    <p><b>Volume:</b> @Model.vol.volValue <sup>@Model.vol.volExponent</sup></p>
-}
+        @*Display Gravity / account for null*@
+        @if (Model.gravity.ToString() == null || Model.gravity.ToString() == "")
+        {
+            <p><b>Gravity:</b> Unknown</p>
+        }
+        else
+        {
+            <p><b>Gravity:</b> @Model.gravity</p>
+        }
 
-@*Display Gravity / account for null*@
-@if (Model.gravity.ToString() == null || Model.gravity.ToString() == "")
-{
-    <p><b>Gravity:</b> Unknown</p>
-}
-else
-{
-    <p><b>Gravity:</b> @Model.gravity</p>
-}
+        @*Display #ofMoons or Around Planet*@
+        @if (Model.isPlanet)
+        {
+            if (Model.moons == null)
+            {
+                <p><b>Number of moons:</b> 0</p>
+            }
+            else
+            {
+                <p><b>Number of moons:</b> @Model.moons.Length</p>
+            }
+        }
+        else
+        {
+            if (Model.aroundPlanet == null)
+            {
+                <p><b>Orbits around:</b> Unknown</p>
+            }
+            else
+            {
+                <p><b>Orbits around:</b> @Model.aroundPlanet.planet</p>
+            }
+        }
 
-@*Display #ofMoons or Around Planet*@
-@if (Model.isPlanet)
-{
-    if (Model.moons == null)
-    {
-        <p><b>Number of moons:</b> 0</p>
-    }
-    else
-    {
-        <p><b>Number of moons:</b> @Model.moons.Length</p>
-    }
-}
-else
-{
-    if (Model.aroundPlanet == null)
-    {
-        <p><b>Orbits around:</b> Unknown</p>
-    }
-    else
-    {
-        <p><b>Orbits around:</b> @Model.aroundPlanet.planet</p>
-    }
-}
+        @*Display discovery people/account for null*@
+        @if (Model.discoveredBy == "" || Model.discoveredBy == null)
+        {
+            <p><b>Discovered By:</b> Unknown</p>
+        }
+        else
+        {
+            <p><b>Discovered By:</b> @Model.discoveredBy</p>
+        }
 
-@*Display discovery people/account for null*@
-@if (Model.discoveredBy == "" || Model.discoveredBy == null)
-{
-    <p><b>Discovered By:</b> Unknown</p>
-}
-else
-{
-    <p><b>Discovered By:</b> @Model.discoveredBy</p>
-}
-
-@*Display discovery date/account for null*@
-@if (Model.discoveryDate == "" || Model.discoveryDate == null)
-{
-    <p><b>Date Discovered:</b> Unknown</p>
-}
-else
-{
-    <p><b>Date Discovered:</b> @Model.discoveryDate</p>
-}
+        @*Display discovery date/account for null*@
+        @if (Model.discoveryDate == "" || Model.discoveryDate == null)
+        {
+            <p><b>Date Discovered:</b> Unknown</p>
+        }
+        else
+        {
+            <p><b>Date Discovered:</b> @Model.discoveryDate</p>
+        }
+        </div>

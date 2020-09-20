@@ -14,10 +14,11 @@
     <title>@ViewData["Title"] - Solar System App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/StyleSheet.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Solar System App</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -45,16 +46,16 @@
                                 {
                                     <ul class="navbar-nav flex-grow-1">
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="Index">Home</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Teacher" asp-action="Index">Home</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="CreateClassroom">Create Classroom</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Teacher" asp-action="CreateClassroom">Create Classroom</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="LeaderBoard">Class LeaderBoard</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Teacher" asp-action="LeaderBoard">Class LeaderBoard</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Teacher" asp-action="MyClassroom">My Classes</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Teacher" asp-action="MyClassroom">My Classes</a>
                                         </li>
                                     </ul>
                                 }
@@ -62,19 +63,19 @@
                                 {
                                     <ul class="navbar-nav flex-grow-1">
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Home</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="Index">Home</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="DisplayBodies">Learning Center</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="DisplayBodies">Learning Center</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="ChoseAQuize">Quizzes</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="ChoseAQuize">Quizzes</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="MyGrades">My Grades</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="MyGrades">My Grades</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="ClassLeaderBoard">Class LeaderBoard</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="ClassLeaderBoard">Class LeaderBoard</a>
                                         </li>
                                     </ul>
                                 }
@@ -82,16 +83,16 @@
                                 {
                                     <ul class="navbar-nav flex-grow-1">
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="Index">Home</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="Index">Home</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="CreateRole">Create Role</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Show Roles</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="ListRoles">Show Roles</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="HumanResources">HR Department</a>
+                                            <a class="nav-link text-light" asp-area="" asp-controller="Administration" asp-action="HumanResources">HR Department</a>
                                         </li>
                                     </ul>
                                 }
@@ -101,10 +102,10 @@
                         {
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
                                 </li>
                             </ul>
                         }
@@ -120,9 +121,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-dark">
         <div class="container">
-            &copy; 2020 - FinalProject_SolarSystemEducationApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - Space Edu | Lauren Fryman | Ramez Herrick | Josh Jabour @*<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
