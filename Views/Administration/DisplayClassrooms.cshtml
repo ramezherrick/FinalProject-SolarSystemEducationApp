@@ -4,15 +4,28 @@
 }
 
 <h1>DisplayClassrooms</h1>
-@model List<Classrooms>
-<table class="table">
+@model PrincipleViewModel
+<table class="table table-bordered">
     <tr>
         <th>Class Name</th>
+        <th>Student names</th>
+        <th>Teacher Name</th>
+        <th>Remove Class</th>
     </tr>
-    @foreach (Classrooms c in Model)
+    @foreach (Classrooms c in Model.classrooms)
     {
         <tr>
             <td>@c.ClassName</td>
+            <td>
+                @foreach (Students s in Model.students)
+                {
+                    @if (s.ClassroomId == c.Id)
+                    {
+                        @s.FirstName @s.LastName<br />
+                    }
+                }
+            </td>
+            <td>@c.Teacher.FirstName @c.Teacher.LastName</td>
             <td><a class="btn btn-primary" href="../Administration/DeleteClassroom?id=@c.Id">Remove Class</a></td>
         </tr>
     }

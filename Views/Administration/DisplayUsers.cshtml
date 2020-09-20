@@ -5,24 +5,58 @@
 
 <h1>Display users</h1>
 @model PrincipleViewModel
-<table class="table">
+<table class="table table-bordered">
     <tr>
-        <th>Email</th>
-     
+        <th>User Name</th>
+        <th>User ID</th>
+        <th>Role Name</th>
+        <th>Role ID</th>
+        <th>Remove User</th>
     </tr>
-    @foreach (AspNetUsers a in Model.users)
+
+
+    @foreach (AspNetUsers u in Model.users)
     {
         <tr>
-            <td>@a.Email</td>
-            @*@foreach (AspNetUserRoles ur in Model.userRoles)
-            {
-                if(a.Id == ur.UserId)
+            <td>@u.UserName</td>
+            <td>@u.Id</td>
+            <td>
+                @foreach (AspNetUserRoles a in Model.userRoles)
                 {
-                    <td>@ur.RoleId</td>
+                    @if (u.Id == a.UserId)
+                    {
+                        @foreach (AspNetRoles r in Model.roles)
+                        {
+                            if (r.Id == a.RoleId)
+                            {
+                                @r.Name <br />
+                            }
+                        }
+                    }
                 }
-            }*@
+            </td>
+            <td>
+                @foreach (AspNetUserRoles a in Model.userRoles)
+                {
+                    @if (u.Id == a.UserId)
+                    {
+                        @foreach (AspNetRoles r in Model.roles)
+                        {
+                            if (r.Id == a.RoleId)
+                            {
+                                @r.Id <br />
+                            }
+                        }
+                    }
+                }
+            </td>
 
-            <td><a class="btn btn-primary" href="../Administration/DeleteUser?id=@a.Id">Remove Users</a></td>
+
+
+
+
+
+            <td><a class="btn btn-primary" href="../Administration/DeleteUser?id=@u.Id">Remove Users</a></td>
         </tr>
     }
 

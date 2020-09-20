@@ -234,8 +234,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             PrincipleViewModel principle = new PrincipleViewModel();
             principle.users = _context.AspNetUsers.ToList();
+            principle.roles = _context.AspNetRoles.ToList();
             principle.userRoles = _context.AspNetUserRoles.ToList();
-            //var usersList = _context.AspNetUsers.ToList();
             return View(principle);
         }
         [Authorize(Roles = "admin")]
@@ -251,6 +251,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.grades = _context.Grades.ToList();
             principle.classrooms = _context.Classrooms.ToList();
             principle.students = _context.Students.ToList();
+            principle.quizes = _context.Quizes.ToList();
+            principle.teachers = _context.Teachers.ToList();
             return View(principle);
         }
         [Authorize(Roles = "admin")]
@@ -261,8 +263,13 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult DisplayClassrooms()
         {
-            var classroomsList = _context.Classrooms.ToList();
-            return View(classroomsList);
+            PrincipleViewModel principle = new PrincipleViewModel();
+            principle.grades = _context.Grades.ToList();
+            principle.classrooms = _context.Classrooms.ToList();
+            principle.students = _context.Students.ToList();
+            principle.quizes = _context.Quizes.ToList();
+            principle.teachers = _context.Teachers.ToList();
+            return View(principle);
         }
         [Authorize(Roles = "admin")]
         public IActionResult DeleteStudent( int id)

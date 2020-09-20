@@ -14,19 +14,19 @@
     </tr>
     @foreach (AspNetRoles r in Model.roles)
     {
-<tr>
-    <td>@r.Name</td>
-    @foreach (AspNetUserRoles userRole in Model.userRoles)
-    {
-        @if (userRole.RoleId == r.Id)
-        {
-            count++;
-        }
-    }
+        <tr>
+            <td>@r.Name</td>
+            @foreach (AspNetUserRoles userRole in Model.userRoles)
+            {
+                @if (userRole.RoleId == r.Id)
+                {
+                    count++;
+                }
+            }
 
-    <td>@count</td>
-    @{count = 0;}
-</tr>
+            <td>@count</td>
+            @{count = 0;}
+        </tr>
     }
     <tr>
         <td>Total Head Count</td>
@@ -98,6 +98,7 @@
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>Teacher Name</th>
         <th>Average Grade</th>
     </tr>
 
@@ -106,6 +107,7 @@
         <tr>
             <td>@cvm.FirstName</td>
             <td>@cvm.LastName</td>
+            <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
             <td>@cvm.AverageGrade</td>
 
         </tr>
@@ -113,12 +115,13 @@
 </table>
 <br />
 <br />
-<h4>List of students with difficulty</h4>
+<h4>List of Students With Difficulty</h4>
 
 <table class="table table-bordered">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>Teacher Name</th>
         <th>Average Grade</th>
     </tr>
 
@@ -127,6 +130,7 @@
         <tr>
             <td>@cvm.FirstName</td>
             <td>@cvm.LastName</td>
+            <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
             <td style="color:darkred">@cvm.AverageGrade</td>
 
         </tr>
