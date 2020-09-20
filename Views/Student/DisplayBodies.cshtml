@@ -9,18 +9,6 @@
 <br /><br />
 <h3>Planets</h3>
 
-@*<button onclick="showMoons()">Show moons</button>
-<ul>
-    <li>
-        parts
-        <ul id="planetMoons">
-            <li>boobs</li>
-            <li>butts</li>
-            <li>farts</li>
-        </ul>
-    </li>
-</ul>*@
-
 <ul style="font-size:larger">
     @{int count2 = 0;}
     @foreach (Body planet in Model)
@@ -70,24 +58,6 @@
         }
     }
 </ul>
-@*<br /><br /><br />
-<h3>Moons</h3>
-
-@foreach (Body b in Model)
-{
-    if (b.isPlanet == false)
-    {
-        if (b.englishName == "" || b.englishName == null)
-        {
-            bodyName = b.name;
-        }
-        else
-        {
-            bodyName = b.englishName;
-        }
-            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
-    }
-}*@
 
 <script>
     function showMoons(count2) {
