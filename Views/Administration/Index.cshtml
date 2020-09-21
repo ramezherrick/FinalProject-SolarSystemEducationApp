@@ -62,28 +62,40 @@
             <td>
                 @foreach (Students s in Model.students)
                 {
-                    if (s.Classroom.Teacher == t)
+                    if (s.Classroom != null)
                     {
-                        <p>@s.FirstName @s.LastName </p><br />
+                        if (s.Classroom.Teacher == t)
+                        {
+                            <p>@s.FirstName @s.LastName </p><br />
+                        }
                     }
+
                 }
             </td>
             <td>
                 @foreach (Students s in Model.students)
                 {
-                    if (s.Classroom.Teacher == t)
+                    if (s.Classroom != null)
                     {
-                        <p>@s.Classroom.ClassName </p><br />
+                        if (s.Classroom.Teacher == t)
+                        {
+                            <p>@s.Classroom.ClassName </p><br />
+                        }
                     }
+
                 }
             </td>
             <td>
                 @foreach (Students s in Model.students)
                 {
-                    if (s.Classroom.Teacher == t)
+                    if (s.Classroom != null)
                     {
-                        <p>@s.AverageGrade% </p><br />
+                        if (s.Classroom.Teacher == t)
+                        {
+                            <p>@s.AverageGrade% </p><br />
+                        }
                     }
+
                 }
             </td>
         </tr>
@@ -117,24 +129,28 @@
 <br />
 <h4>List of Students With Difficulty</h4><br />
 
-<table class="table-bordered-space table-space">
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Teacher Name</th>
-        <th>Average Grade</th>
-    </tr>
+                                         <table class="table-bordered-space table-space">
+                                             <tr>
+                                                 <th>First Name</th>
+                                                 <th>Last Name</th>
+                                                 <th>Teacher Name</th>
+                                                 <th>Average Grade</th>
+                                             </tr>
 
-    @foreach (Students cvm in Model.studentsWithDifficulty)
-    {
-        <tr>
-            <td>@cvm.FirstName</td>
-            <td>@cvm.LastName</td>
-            <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
-            <td style="color:darkred">@cvm.AverageGrade%</td>
+                                             @foreach (Students cvm in Model.studentsWithDifficulty)
+                                             {
+                                                 if (cvm.Classroom != null)
+                                                 {
+                                                     <tr>
+                                                         <td>@cvm.FirstName</td>
+                                                         <td>@cvm.LastName</td>
+                                                         <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
+                                                         <td style="color:darkred">@cvm.AverageGrade%</td>
 
-        </tr>
-    }
-</table>
+                                                     </tr>
+                                                 }
+
+                                             }
+                                         </table>
 
 

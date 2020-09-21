@@ -25,7 +25,11 @@
                     }
                 }
             </td>
-            <td>@c.Teacher.FirstName @c.Teacher.LastName</td>
+            @if(c.Teacher!=null)
+            {
+        <td>@c.Teacher.FirstName @c.Teacher.LastName</td>
+            }
+            
             <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteClassroom?id=@c.Id">Remove Class</a></td>
         </tr>
     }
