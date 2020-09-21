@@ -73,3 +73,9 @@ a:hover {
 .incorrect h4 {
     color: darkred;
 }
+
+.chick-e {
+    text-align: right;
+    float:right;
+    margin-right:25px;
+}

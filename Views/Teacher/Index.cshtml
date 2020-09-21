@@ -10,4 +10,20 @@
         }
         <h1>Use this app to manage your classes.</h1>
 
+
+        @{ 
+            List<string> images = new List<string>()
+            {
+                "chick-e1.png",
+                "chick-e2.png",
+                "chick-e3.png",
+                "chick-e4.png",
+                "chick-e5.png",
+            };
+            Random rand = new Random();
+            int num = rand.Next(0, 4);
+        }
+        <br /><br />
+        <img src="~/css/teachersimg/@images[num]" alt="Chick-E" class="chick-e" height="35%" width="35%" />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     </div>
