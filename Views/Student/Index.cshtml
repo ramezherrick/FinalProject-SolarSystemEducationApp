@@ -2,19 +2,24 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 @model StudentIndexViewModel
-  
-    
-    
-    <div class="contentDiv">
-        <header>
-            @foreach (Students s in Model.students)
-            {
-                <h1>Welcome to @Model.classrooms[0].ClassName! @s.FirstName @s.LastName</h1>
-            }
-        </header>
+
+<div class="contentDiv">
+    <header>
+        @foreach (Students s in Model.students)
+        {
+            <h1>
+                Your Team: @Model.classrooms[0].ClassName
+                <br />
+                Name: @s.FirstName @s.LastName
+            </h1>
+        }
+    </header>
+    <br />
+    <p class="regularText">
+        With this app you will learn the basics of our planets and moons in the galaxy in order to be the best cadet you can be! The time to explore is upon us and you need to pass the quizzes to get there. We will keep track of the grades and you will continue to learn. You can navigate through the galaxy with the links below or the tabs up top. Good luck!
         <br />
-        <p class="regularText">Time for work. Choose what you want to do.</p>
         <br />
         <a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
         <br />
@@ -41,4 +46,4 @@
         <img src="~/css/studentsimg/@images[num]" alt="Chick-E" class="chick-e" height="35%" width="35%" />
         <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
-    </div>
+</div>
