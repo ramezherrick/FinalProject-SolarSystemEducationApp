@@ -4,9 +4,9 @@
 }
 
 
-<h1>DisplayTeachers</h1>
+<h1>Display Teachers</h1><br />
 @model List<Teachers>
-<table class="table table-bordered">
+<table class="table-space table-bordered-space">
     <tr>
         <th>Teachers</th>
         <th>Remove Teacher</th>
@@ -15,7 +15,7 @@
     {
         <tr>
             <td>@t.FirstName @t.LastName</td>
-            <td><a class="btn btn-primary" href="../Administration/DeleteTeacher?id=@t.Id">Remove Teacher</a></td>
+            <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteTeacher?id=@t.Id">Remove Teacher</a></td>
         </tr>
     }
 

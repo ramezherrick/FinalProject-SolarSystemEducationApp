@@ -6,8 +6,8 @@
 
 @{ int count = 0; }
 
-<h4>Head Count</h4>
-<table class="table table-bordered">
+<h4>Head Count</h4><br />
+<table class="table-bordered-space table-space">
     <tr>
         <th>Identity Role Name</th>
         <th>Head Count</th>
@@ -37,8 +37,8 @@
 <br />
 <br />
 
-<h4>Organization Chart</h4>
-<table class="table table-bordered">
+<h4>Organization Chart</h4><br />
+<table class="table-bordered-space table-space">
     <tr class="d-table-row">
         <th>Teacher Name</th>
         <th>Teacher Class</th>
@@ -82,7 +82,7 @@
                 {
                     if (s.Classroom.Teacher == t)
                     {
-                        <p>@s.AverageGrade </p><br />
+                        <p>@s.AverageGrade% </p><br />
                     }
                 }
             </td>
@@ -92,9 +92,9 @@
 
 <br />
 <br />
-<h4>Dean's List</h4>
+<h4>Dean's List</h4><br />
 
-<table class="table table-bordered">
+<table class="table-bordered-space table-space">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -108,16 +108,16 @@
             <td>@cvm.FirstName</td>
             <td>@cvm.LastName</td>
             <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
-            <td>@cvm.AverageGrade</td>
+            <td>@cvm.AverageGrade%</td>
 
         </tr>
     }
 </table>
 <br />
 <br />
-<h4>List of Students With Difficulty</h4>
+<h4>List of Students With Difficulty</h4><br />
 
-<table class="table table-bordered">
+<table class="table-bordered-space table-space">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -131,7 +131,7 @@
             <td>@cvm.FirstName</td>
             <td>@cvm.LastName</td>
             <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
-            <td style="color:darkred">@cvm.AverageGrade</td>
+            <td style="color:darkred">@cvm.AverageGrade%</td>
 
         </tr>
     }
