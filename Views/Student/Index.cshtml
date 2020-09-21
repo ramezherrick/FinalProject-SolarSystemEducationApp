@@ -3,21 +3,18 @@
     ViewData["Title"] = "Index";
 }
 @model List<Students>
-  
-    <header>
-        @foreach (Students s in Model)
-        {
-            <h1>Welcome to Class! @s.FirstName @s.LastName</h1>
-        }
-    </header>
 
-    <br />
-    <p>Time for work. Choose what you want to do.</p>
-    <br />
-    <a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
-    <br />
-    <a href="../Student/MyGrades">Look at my grades.</a>
-    <br />
-    <a href="../Student/ClassLeaderBoard">Take a gander at the LeaderBoard.</a>
-    <br />
-    <a href="../Student/DisplayBodies">Let's Learn Some Stuff.</a>
+@foreach (Students s in Model)
+{
+    <h1>Welcome to Class! @s.FirstName @s.LastName</h1>
+}
+<br />
+<p>Time for work. Choose what you want to do.</p>
+<br />
+<a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
+<br />
+<a href="../Student/MyGrades">Look at my grades.</a>
+<br />
+<a href="../Student/ClassLeaderBoard">Take a gander at the LeaderBoard.</a>
+<br />
+<a href="../Student/DisplayBodies">Let's Learn Some Stuff.</a>
