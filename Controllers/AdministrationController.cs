@@ -33,6 +33,10 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             _context = context;
             _signInManager = signInManager;
         }
+        public IActionResult Welcome()
+        {
+            return View(); 
+        }
 
         [Authorize(Roles = "admin")]
         [HttpGet]

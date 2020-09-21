@@ -342,7 +342,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             double? newGrade = Math.Round((double)fullPoints / count);
             student.AverageGrade = newGrade;
 
-
             _context.Entry(student).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Students.Update(student);
             _context.SaveChanges();
@@ -354,7 +353,6 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             List<Classrooms> classroom = _context.Classrooms.Where(x => x.Id == cid).ToList();
             Classrooms cRoom = classroom[0]; 
             List<Students> students = _context.Students.ToList();
-
 
             double? points = 0;
             double count = 0;
@@ -565,7 +563,5 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(classroom);
         }
-
-
     }
 }
