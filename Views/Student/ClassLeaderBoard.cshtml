@@ -2,14 +2,12 @@
 @{
     ViewData["Title"] = "ClassLeaderBoard";
 }
-
-<h1>LeaderBoard</h1>
-
 @model List<Classrooms>
 
 <h2>Classroom leader board</h2>
-<table class="table table-bordered">
-    <tr>
+<br />
+<table class="table-bordered-space table-space">
+    <tr class="d-table-row">
         <th class="text-center">Class Name</th>
         <th class="text-center">Class Average</th>
 
@@ -18,11 +16,11 @@
     {
         if (cr.ClassAvg != null)
         {
-            <tr>
+            <tr class="d-table-row">
                 <td class="text-center">@cr.ClassName</td>
                 @if (cr.ClassAvg != null)
                 {
-                    <td class="text-center">@cr.ClassAvg</td>
+                    <td class="text-center">@cr.ClassAvg%</td>
                 }
             </tr>
         }

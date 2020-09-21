@@ -1,8 +1,75 @@
 ﻿body {
-
+    background-color: #1f244d;
+    color: #ffffff;
 }
 header {
     position: sticky;
     top: 0;
-    background-color: thistle;
+}
+
+nav {
+    background-color: #1f244d;
+}
+
+.regularText {
+    font-size: 18px;
+}
+
+a {
+    color: #f000f0;
+    font-size: 18px;
+}
+
+a:hover {
+    color: #ff4dff;
+    font-size: 18px;
+}
+
+.contentDiv {
+    background-color: #210535;
+    padding: 20px;
+    border-radius: 20px 20px;
+    box-shadow: #000000 -3px 3px 10px;
+}
+
+.table-space {
+    background-color: #210535;
+    box-shadow: #000000 -3px 3px 10px;
+    border-color: #000000;
+    width:100%;
+    
+}
+
+.table-space th {
+    color: #FFFFFF;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.table-space td {
+    color: #FFFFFF;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.table-bordered-space {
+    border: 1px solid #f000f0;
+}
+
+.table-bordered-space th,
+.table-bordered-space td {
+    border: 1px solid #f000f0;
+}
+
+.table-bordered-space thead th,
+.table-bordered-space thead td {
+    border-bottom-width: 2px;
+}
+
+.correct h4 {
+    color: green;
+}
+
+.incorrect h4 {
+    color: darkred;
 }

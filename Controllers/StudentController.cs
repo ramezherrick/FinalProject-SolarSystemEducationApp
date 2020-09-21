@@ -25,9 +25,13 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         public IActionResult Index()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<Students> student = _context.Students.Where(x => x.UserId == id).ToList();
+            StudentIndexViewModel students = new StudentIndexViewModel();
+            students.students = _context.Students.Where(x => x.UserId == id).ToList();
+            students.classrooms = _context.Classrooms.Where(x => x.Id == students.students[0].ClassroomId).ToList();
             
-            return View(student);
+            //List<Students> student = _context.Students.Where(x => x.UserId == id).ToList();
+            
+            return View(students);
         }
         [HttpGet]
         public async Task<IActionResult> TakePlanetsQuiz()

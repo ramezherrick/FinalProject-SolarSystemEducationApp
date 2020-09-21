@@ -3,12 +3,10 @@
     ViewData["Title"] = "LeaderBoard";
 }
 
-<h1>LeaderBoard</h1>
-
 @model ClassroomsViewModel
 
-<h2>Classroom leader board</h2>
-<table class="table">
+<h2>Classroom leader board</h2><br />
+<table class="table-bordered-space table-space">
     <tr>
         <th>Teacher Name</th>
         <th>Class Name</th>
@@ -26,22 +24,24 @@
                 <td>@cr.ClassName</td>
                 @if (cr.ClassAvg != null)
                 {
-                    <td>@cr.ClassAvg</td>
+                    <td>@cr.ClassAvg%</td>
                 }
             </tr>
         }
     }
 </table>
-
-<table class="table">
+<br /><br />
+<h2>Quiz Averages</h2>
+<br />
+<table class="table-bordered-space table-space">
     <tr>
-        <th>What am I?</th>
-        <th>Planets Quiz</th>
-        <th>Moon Quiz</th>
+        <th><center>What am I?</center></th>
+        <th><center>Planets Quiz</center></th>
+        <th><center>Moon Quiz</center></th>
     </tr>
     <tr>
-        <td>@Model.QuizAverage1</td>
-        <td>@Model.QuizAverage2</td>
-        <td>@Model.QuizAverage3</td>
+        <td align="center">@Model.QuizAverage1%</td>
+        <td align="center">@Model.QuizAverage2%</td>
+        <td align="center">@Model.QuizAverage3%</td>
     </tr>
 </table>

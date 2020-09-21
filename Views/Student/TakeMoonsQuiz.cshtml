@@ -3,73 +3,74 @@
     ViewData["Title"] = "TakeMoonsQuiz";
 }
 
-<h1>Moons Quiz</h1>
+    <div class="contentDiv">
+        <h1>Moons Quiz: @Model[ViewBag.indexOfMoonToBeTested].englishName</h1>
 
-@model List<Body>
+        @model List<Body>
 
-<form action="../Student/TakeMoonsQuiz" method="post">
+        <form action="../Student/TakeMoonsQuiz" method="post">
 
-    <h2>@Model[ViewBag.indexOfMoonToBeTested].englishName</h2>
+            @{List<string> keyWords = new List<string>() { "mass", "Who", "When", "orbit" };}
+            @{int count = 0;}
 
-    @{List<string> keyWords = new List<string>() { "mass", "Who", "When", "orbit" };}
-    @{int count = 0;}
-
-    @foreach (Questionsbank qb in ViewBag.questiosBankList)
-    {
-        if (qb.QuizId == 3)
-        {
-            <h2>@qb.Question.Question</h2>
-
-            @foreach (string kw in keyWords)
+            @foreach (Questionsbank qb in ViewBag.questiosBankList)
             {
-                List<string> options = new List<string>();
-                if (qb.Question.Question.Contains(kw))
+                if (qb.QuizId == 3)
                 {
-                    foreach (Body b in Model)
+                    <h2>@qb.Question.Question</h2>
+
+                    @foreach (string kw in keyWords)
                     {
-                        if (kw == "mass")
+                        List<string> options = new List<string>();
+                        if (qb.Question.Question.Contains(kw))
                         {
-                            options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
+                            foreach (Body b in Model)
+                            {
+                                if (kw == "mass")
+                                {
+                                    options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
+                                }
+                                else if (kw == "Who")
+                                {
+                                    options.Add(b.discoveredBy.ToString());
+                                }
+                                else if (kw == "When")
+                                {
+                                    options.Add(b.discoveryDate.ToString());
+                                }
+                                else if (kw == "orbit")
+                                {
+                                    options.Add(b.aroundPlanet.planet.ToString());
+                                }
+                            }
                         }
-                        else if (kw == "Who")
+                        if (options.Count > 0)
                         {
-                            options.Add(b.discoveredBy.ToString());
-                        }
-                        else if (kw == "When")
-                        {
-                            options.Add(b.discoveryDate.ToString());
-                        }
-                        else if (kw == "orbit")
-                        {
-                            options.Add(b.aroundPlanet.planet.ToString());
+                            List<string> selections = new List<string>();
+                            Random number = new Random();
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int index = number.Next(0, options.Count);
+                                selections.Add(options[index]);
+                                options.RemoveAt(index);
+                            }
+                            <select name="answers">
+                                @foreach (string s in selections)
+                                {
+                                    <option value="@s">@s</option>
+                                }
+                            </select>
+                            <br /><br />
                         }
                     }
-                }
-                if (options.Count > 0)
-                {
-                    List<string> selections = new List<string>();
-                    Random number = new Random();
-                    for (int i = 0; i < 4; i++)
-                    {
-                        int index = number.Next(0, options.Count);
-                        selections.Add(options[index]);
-                        options.RemoveAt(index);
-                    }
-                    <select name="answers">
-                        @foreach (string s in selections)
-                        {
-                            <option value="@s">@s</option>
-                        }
-                    </select>
                 }
             }
-        }
-    }
 
-    <br />
+            <br />
 
-    @{ViewBag.testedMoon = Model[ViewBag.indexOfMoonToBeTested];}
-    <input type="text" name="englishName" value="@Model[ViewBag.indexOfMoonToBeTested].englishName" hidden />
-    <input type="submit" />
+            @{ViewBag.testedMoon = Model[ViewBag.indexOfMoonToBeTested];}
+            <input type="text" name="englishName" value="@Model[ViewBag.indexOfMoonToBeTested].englishName" hidden />
+            <input type="submit" />
 
-</form>
+        </form>
+    </div>

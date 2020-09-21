@@ -3,10 +3,10 @@
     ViewData["Title"] = "DisplayGrades";
 }
 
-<h1>Display Grades</h1>
+<h1>Display Grades</h1><br />
 
 @model PrincipleViewModel
-<table class="table table-bordered">
+<table class="table-space table-bordered-space">
     <tr>
 
         <th>Grades</th>
@@ -19,12 +19,12 @@
     @foreach (Grades g in Model.grades)
     {
         <tr>
-            <td>@g.Grade</td>
+            <td>@g.Grade%</td>
             <td>@g.Student.FirstName @g.Student.LastName</td>
             <td>@g.Quiz.QuizType</td>
             <td>@g.Student.Classroom.ClassName</td>
             <td>@g.Student.Classroom.Teacher.FirstName @g.Student.Classroom.Teacher.LastName</td>
-            <td><a class="btn btn-primary" href="../Administration/DeleteGrade?id=@g.Id">Delete grade</a></td>
+            <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteGrade?id=@g.Id">Delete grade</a></td>
         </tr>
 
     }

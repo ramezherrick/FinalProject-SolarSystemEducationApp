@@ -3,9 +3,9 @@
     ViewData["Title"] = "DisplayStudents";
 }
 
-<h1>DisplayStudents</h1>
+<h1>Display Students</h1><br />
 @model PrincipleViewModel
-<table class="table table-bordered">
+<table class="table-space table-bordered-space">
     <tr>
         <th>Student Name</th>
         <th>Remove Student</th>
@@ -18,7 +18,7 @@
                 <td>
                         @s.FirstName @s.LastName <br />
                 </td>
-                <td><a class="btn btn-primary" href="../Administration/DeleteStudent?id=@s.Id">Delete student</a></td>
+                <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteStudent?id=@s.Id">Delete student</a></td>
                 
             </tr>
         }

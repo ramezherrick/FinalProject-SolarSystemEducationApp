@@ -4,98 +4,69 @@
     ViewData["Title"] = "Display Bodies";
 }
 
-@{ string bodyName = "";}
-<h2>Click a name to learn more about that Planet or Moon!</h2>
-<br /><br />
-<h3>Planets</h3>
+<div class="contentDiv">
+    @{ string bodyName = "";}
+    <h2>Click a name to learn more about that Planet or Moon!</h2>
+    <br /><br />
+    <h3>Planets</h3>
 
-@*<button onclick="showMoons()">Show moons</button>
-<ul>
-    <li>
-        parts
-        <ul id="planetMoons">
-            <li>boobs</li>
-            <li>butts</li>
-            <li>farts</li>
-        </ul>
-    </li>
-</ul>*@
-
-<ul style="font-size:larger">
-    @{int count2 = 0;}
-    @foreach (Body planet in Model)
-    {
-        int count = 1;
-
-        if (planet.isPlanet == true)
+    <ul style="font-size:larger">
+        @{int count2 = 0;}
+        @foreach (Body planet in Model)
         {
-            if (planet.englishName == "" || planet.englishName == null)
+            int count = 1;
+
+            if (planet.isPlanet == true)
             {
-                bodyName = planet.name;
-            }
-            else
-            {
-                bodyName = planet.englishName;
-            }
-            <li>
-                <a href="../Student/BodyDetails?id=@planet.id">@bodyName</a> <br />
-                @if (planet.moons != null)
+                if (planet.englishName == "" || planet.englishName == null)
                 {
-                    <button onclick="showMoons(@count2)" class="btn-sm btn btn-dark">Show moons</button>
+                    bodyName = planet.name;
                 }
-                
-
-                <ul id="planetMoons_@count2" style="display:none">
-                    @{count2++;}
-                    
-                    @foreach (Body moon in Model)
+                else
+                {
+                    bodyName = planet.englishName;
+                }
+                <li>
+                    <a href="../Student/BodyDetails?id=@planet.id">@bodyName</a> <br />
+                    @if (planet.moons != null)
                     {
-                        if (moon.isPlanet == false && moon.aroundPlanet != null && moon.aroundPlanet.planet.ToLower() == planet.id.ToLower() && moon.aroundPlanet.planet != "")
-                        {
-                            if (moon.englishName == "" || moon.englishName == null)
-                            {
-                                bodyName = moon.name;
-                            }
-                            else
-                            {
-                                bodyName = moon.englishName;
-                            }
-                            <li>@count) <a href="../Student/BodyDetails?id=@moon.id">@bodyName</a></li>
-                            count++;
-                        }
+                        <button onclick="showMoons(@count2)" class="btn-sm btn btn-secondary">Show moons</button>
                     }
-                </ul>
-            </li>
-            
-        }
-    }
-</ul>
-@*<br /><br /><br />
-<h3>Moons</h3>
 
-@foreach (Body b in Model)
-{
-    if (b.isPlanet == false)
-    {
-        if (b.englishName == "" || b.englishName == null)
-        {
-            bodyName = b.name;
-        }
-        else
-        {
-            bodyName = b.englishName;
-        }
-            <a href="../Student/BodyDetails?id=@b.id">@bodyName</a>
-    }
-}*@
+                    <ul id="planetMoons_@count2" style="display:none">
+                        @{count2++;}
 
-<script>
-    function showMoons(count2) {
-        var x = document.getElementById("planetMoons_" + count2);
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
+                        @foreach (Body moon in Model)
+                        {
+                            if (moon.isPlanet == false && moon.aroundPlanet != null && moon.aroundPlanet.planet.ToLower() == planet.id.ToLower() && moon.aroundPlanet.planet != "")
+                            {
+                                if (moon.englishName == "" || moon.englishName == null)
+                                {
+                                    bodyName = moon.name;
+                                }
+                                else
+                                {
+                                    bodyName = moon.englishName;
+                                }
+                                <li>@count) <a href="../Student/BodyDetails?id=@moon.id">@bodyName</a></li>
+                                count++;
+                            }
+                        }
+                    </ul>
+                </li>
+                <br />
+            }
         }
-    }
-</script>
+    </ul>
+
+    <script>
+        function showMoons(count2) {
+            var x = document.getElementById("planetMoons_" + count2);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</div>
