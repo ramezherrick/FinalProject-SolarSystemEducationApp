@@ -6,7 +6,8 @@
 
 @{ int count = 0; }
 
-<h4>Head Count</h4><br />
+<h4>Head Count</h4>
+<br />
 <table class="table-bordered-space table-space">
     <tr>
         <th>Identity Role Name</th>
@@ -37,7 +38,8 @@
 <br />
 <br />
 
-<h4>Organization Chart</h4><br />
+<h4>Organization Chart</h4>
+<br />
 <table class="table-bordered-space table-space">
     <tr class="d-table-row">
         <th>Teacher Name</th>
@@ -49,13 +51,13 @@
     @foreach (Teachers t in Model.teachers)
     {
         <tr class="d-table-row">
-            <td>@t.FirstName @t.LastName</td>
+            <td><p>@t.FirstName @t.LastName</p><br /></td>
             <td>
                 @foreach (Classrooms c in Model.classrooms)
                 {
                     if (c.Teacher.FirstName == t.FirstName)
                     {
-                        @c.ClassName<br />
+                     <p>@c.ClassName</p><br />
                     }
                 }
             </td>
@@ -104,7 +106,8 @@
 
 <br />
 <br />
-<h4>Dean's List</h4><br />
+<h4>Dean's List</h4>
+<br />
 
 <table class="table-bordered-space table-space">
     <tr>
@@ -127,30 +130,31 @@
 </table>
 <br />
 <br />
-<h4>List of Students With Difficulty</h4><br />
+<h4>List of Students With Difficulty</h4>
+<br />
 
-                                         <table class="table-bordered-space table-space">
-                                             <tr>
-                                                 <th>First Name</th>
-                                                 <th>Last Name</th>
-                                                 <th>Teacher Name</th>
-                                                 <th>Average Grade</th>
-                                             </tr>
+<table class="table-bordered-space table-space">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Teacher Name</th>
+        <th>Average Grade</th>
+    </tr>
 
-                                             @foreach (Students cvm in Model.studentsWithDifficulty)
-                                             {
-                                                 if (cvm.Classroom != null)
-                                                 {
-                                                     <tr>
-                                                         <td>@cvm.FirstName</td>
-                                                         <td>@cvm.LastName</td>
-                                                         <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
-                                                         <td style="color:darkred">@cvm.AverageGrade%</td>
+    @foreach (Students cvm in Model.studentsWithDifficulty)
+    {
+        if (cvm.Classroom != null)
+        {
+            <tr>
+                <td>@cvm.FirstName</td>
+                <td>@cvm.LastName</td>
+                <td>@cvm.Classroom.Teacher.FirstName @cvm.Classroom.Teacher.LastName</td>
+                <td style="color:darkred">@cvm.AverageGrade%</td>
 
-                                                     </tr>
-                                                 }
+            </tr>
+        }
 
-                                             }
-                                         </table>
+    }
+</table>
 
 

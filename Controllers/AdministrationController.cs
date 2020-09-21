@@ -253,6 +253,8 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.users = _context.AspNetUsers.ToList();
             principle.roles = _context.AspNetRoles.ToList();
             principle.userRoles = _context.AspNetUserRoles.ToList();
+            principle.students = _context.Students.ToList();
+            principle.teachers = _context.Teachers.ToList();
             return View(principle);
         }
         [Authorize(Roles = "admin")]

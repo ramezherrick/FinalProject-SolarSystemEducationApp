@@ -30,9 +30,20 @@
         <td>@c.Teacher.FirstName @c.Teacher.LastName</td>
             }
             
-            <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteClassroom?id=@c.Id">Remove Class</a></td>
+            <td><a class="btn btn-primary btn-sm regularText" onclick="return myFunction()" href="../Administration/DeleteClassroom?id=@c.Id">Remove Class</a></td>
         </tr>
     }
 
 </table>
+
+<script>
+    function myFunction() {
+        if (confirm("Are you sure you want to delete this item?")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>
 

@@ -3,23 +3,21 @@
     ViewData["Title"] = "DisplayStudents";
 }
 
-<h1>Display users</h1><br />
+<h1>Display users</h1>
+<br />
 @model PrincipleViewModel
 <table class="table-space table-bordered-space">
     <tr>
         <th>User Name</th>
-        <th>User ID</th>
         <th>Role Name</th>
-        <th>Role ID</th>
-        <th>Remove User</th>
+        <th>Name</th>
     </tr>
 
 
     @foreach (AspNetUsers u in Model.users)
     {
         <tr>
-            <td>@u.UserName</td>
-            <td>@u.Id</td>
+            <td><p>@u.UserName</p></td>
             <td>
                 @foreach (AspNetUserRoles a in Model.userRoles)
                 {
@@ -29,34 +27,43 @@
                         {
                             if (r.Id == a.RoleId)
                             {
-                                @r.Name <br />
+                <p> @r.Name </p>
                             }
                         }
                     }
                 }
             </td>
             <td>
-                @foreach (AspNetUserRoles a in Model.userRoles)
+                @foreach (Students s in Model.students)
                 {
-                    @if (u.Id == a.UserId)
+                    @if (u.Id == s.UserId)
+                    {
+
+                        <p>@s.FirstName @s.LastName</p> 
+
+                    }
+                }
+                @foreach (Teachers t in Model.teachers)
+                {
+                    @if (u.Id == t.UserId)
+                    {
+                        <p> @t.FirstName @t.LastName</p>
+                    }
+                }
+                @foreach (AspNetUserRoles ur in Model.userRoles)
+                {
+                    if (u.Id == ur.UserId)
                     {
                         @foreach (AspNetRoles r in Model.roles)
                         {
-                            if (r.Id == a.RoleId)
+                            if (ur.RoleId == r.Id && r.Name == "admin")
                             {
-                                @r.Id <br />
+                                <p>Principle</p>
                             }
                         }
                     }
                 }
             </td>
-
-
-
-
-
-
-            <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteUser?id=@u.Id">Remove</a></td>
         </tr>
     }
 
