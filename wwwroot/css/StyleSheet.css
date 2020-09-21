@@ -66,3 +66,11 @@ a:hover {
 .table-bordered-space thead td {
     border-bottom-width: 2px;
 }
+
+.correct h4 {
+    color: green;
+}
+
+.incorrect h4 {
+    color: darkred;
+}

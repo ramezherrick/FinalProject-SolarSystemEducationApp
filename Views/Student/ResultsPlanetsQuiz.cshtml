@@ -1,20 +1,29 @@
 ﻿
 @{
-    ViewData["Title"] = "ResultsPlanetsQuiz";
+    ViewData["Title"] = "Results Planets Quiz";
 }
 
-<h1>ResultsPlanetsQuiz</h1>
+    <div class="contentDiv">
+        @model List<string>
+        @{int count = 0;}
 
-@model List<string>
-@{int count = 0;}
+        <h1>Quiz Results: @ViewBag.englishname</h1>
+        <h2>Your grade is: @ViewBag.grade%</h2><br />
 
-<h1>Quiz: @ViewBag.englishname</h1>
-<h2>your grade is @ViewBag.grade percent</h2>
+        @foreach (Questions question in ViewBag.questions)
+        {
+            <h4>@question.Question</h4>
+            if (@Model[count] == @ViewBag.correctanswers[count])
+            {
+                <h4 style="color:darkgreen">Your answer: @Model[count]</h4>
+            }
+            else
+            {
+                <h4 style="color:darkred">Your answer: @Model[count]</h4>
+            }
 
-@foreach (Questions question in ViewBag.questions)
-{
-<h4>@question.Question</h4>
-<h4>Your answer:@Model[count] The correct answer is:@ViewBag.correctanswers[count]</h4>
-<br />
-    count++;
-}
+            <h4>The correct answer is: @ViewBag.correctanswers[count]</h4>
+            <br />
+            count++;
+        }
+    </div>

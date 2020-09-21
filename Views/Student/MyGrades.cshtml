@@ -6,6 +6,7 @@
 
 <h1 class="float-left">My Grades</h1>
 <h1 class="float-right">Total Grade: @ViewBag.CurrentStudent.AverageGrade</h1>
+<br /><br /><br />
 
 <table class="table-bordered-space table-space">
     <tr>
@@ -19,7 +20,7 @@
         <tr>
             <td class="text-center">@count</td>
             <td class="text-center">@g.Quiz.QuizType</td>
-            <td class="text-center">@g.Grade</td>
+            <td class="text-center">@g.Grade%</td>
         </tr>
         count++;
     }

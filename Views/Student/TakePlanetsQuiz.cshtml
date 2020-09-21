@@ -1,109 +1,111 @@
 ﻿
 @{
-    ViewData["Title"] = "TakePlanetsQuiz";
+    ViewData["Title"] = "Planets Quiz";
 }
 
-<h1>TakePlanetsQuiz</h1>
+    <div class="contentDiv">
+        <h1>Planets Quiz: @Model[ViewBag.indexOfPlanetToBeTested].englishName</h1>
 
-@model List<Body>
+        @model List<Body>
 
-<form action="../Student/TakePlanetsQuiz" method="post">
+    <form action="../Student/TakePlanetsQuiz" method="post">
 
-    <h2>@Model[ViewBag.indexOfPlanetToBeTested].englishName</h2>
+        @{List<string> keyWords = new List<string>() { "mass", "vol", "moons", "Who", "When", "gravity" };}
+        @{List<string> Discoverers = new List<string>() { "Newton", "Tesla", "NASA", "Greek", "Romans" };}
+        @{List<string> DiscovereryDate = new List<string>() { "A.D.", "50 B.C.", "1000 B.C", "500 B.C", "10000 B.C" };}
+        @{int count = 0;}
 
-    @{List<string> keyWords = new List<string>() { "mass", "vol", "moons", "Who", "When", "gravity" };}
-    @{List<string> Discoverers = new List<string>() { "Newton", "Tesla", "NASA", "Greek", "Romans" };}
-    @{List<string> DiscovereryDate = new List<string>() { "A.D.", "50 B.C.", "1000 B.C", "500 B.C", "10000 B.C" };}
-    @{int count = 0;}
-
-    @foreach (Questionsbank qb in ViewBag.questiosBankList)
-    {
-        if (qb.QuizId == 2)
+        @foreach (Questionsbank qb in ViewBag.questiosBankList)
         {
-            <h2>@qb.Question.Question</h2>
-
-            @foreach (string kw in keyWords)
+            if (qb.QuizId == 2)
             {
-                List<string> options = new List<string>();
-                if (qb.Question.Question.Contains(kw))
+
+                <h2>@qb.Question.Question</h2>
+                
+                @foreach (string kw in keyWords)
                 {
-                    foreach (Body b in Model)
+                    List<string> options = new List<string>();
+                    if (qb.Question.Question.Contains(kw))
                     {
-                        if (kw == "mass")
+                        foreach (Body b in Model)
                         {
-                            options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
-                        }
-                        else if (kw == "vol")
-                        {
-                            options.Add(b.vol.volValue.ToString() + "^" + b.vol.volExponent.ToString());
-                        }
-                        else if (kw == "moons")
-                        {
-                            if (b.moons == null)
+                            if (kw == "mass")
                             {
-                                options.Add("0");
+                                options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
                             }
-                            else
+                            else if (kw == "vol")
                             {
-                                options.Add(b.moons.Length.ToString());
+                                options.Add(b.vol.volValue.ToString() + "^" + b.vol.volExponent.ToString());
                             }
-                        }
-                        else if (kw == "Who")
-                        {
-                            if (b.discoveredBy == null || b.discoveredBy.Length < 1)
+                            else if (kw == "moons")
                             {
-                                options.Add(Discoverers[count]);
-                                count++;
+                                if (b.moons == null)
+                                {
+                                    options.Add("0");
+                                }
+                                else
+                                {
+                                    options.Add(b.moons.Length.ToString());
+                                }
                             }
-                            else
+                            else if (kw == "Who")
                             {
-                                options.Add(b.discoveredBy.ToString());
+                                if (b.discoveredBy == null || b.discoveredBy.Length < 1)
+                                {
+                                    options.Add(Discoverers[count]);
+                                    count++;
+                                }
+                                else
+                                {
+                                    options.Add(b.discoveredBy.ToString());
+                                }
                             }
-                        }
-                        else if (kw == "When")
-                        {
-                            if (b.discoveryDate == null || b.discoveryDate.Length < 1)
+                            else if (kw == "When")
                             {
-                                options.Add(DiscovereryDate[count]);
-                                count++;
+                                if (b.discoveryDate == null || b.discoveryDate.Length < 1)
+                                {
+                                    options.Add(DiscovereryDate[count]);
+                                    count++;
+                                }
+                                else
+                                {
+                                    options.Add(b.discoveryDate.ToString());
+                                }
                             }
-                            else
+                            else if (kw == "gravity")
                             {
-                                options.Add(b.discoveryDate.ToString());
+                                options.Add(b.gravity.ToString());
                             }
-                        }
-                        else if (kw == "gravity")
-                        {
-                            options.Add(b.gravity.ToString());
                         }
                     }
-                }
-                if (options.Count > 0)
-                {
-                    List<string> selections = new List<string>();
-                    Random number = new Random();
-                    for (int i = 0; i < 4; i++)
+                    if (options.Count > 0)
                     {
-                        int index = number.Next(0, options.Count);
-                        selections.Add(options[index]);
-                        options.RemoveAt(index);
-                    }
-                    <select name="answers">
-                        @foreach (string s in selections)
+                        List<string> selections = new List<string>();
+                        Random number = new Random();
+                        for (int i = 0; i < 4; i++)
                         {
-                            <option value="@s">@s</option>
+                            int index = number.Next(0, options.Count);
+                            selections.Add(options[index]);
+                            options.RemoveAt(index);
                         }
-                    </select>
+                        <select name="answers">
+                            @foreach (string s in selections)
+                            {
+                                <option value="@s">@s</option>
+                            }
+                        </select>
+                    }
                 }
             }
+            count = 0;
         }
-        count = 0;
-    }
 
-    <br />
+        <br />
 
-   @{ViewBag.testedPlanet = Model[ViewBag.indexOfPlanetToBeTested];}
-    <input type="text" name="englishName" value="@Model[ViewBag.indexOfPlanetToBeTested].englishName" hidden/>
-    <input type="submit" />
+        @{ViewBag.testedPlanet = Model[ViewBag.indexOfPlanetToBeTested];}
+        <input type="text" name="englishName" value="@Model[ViewBag.indexOfPlanetToBeTested].englishName" hidden />
+        <br />
+        <input type="submit" />
 
-</form>
+    </form>
+    </div>
