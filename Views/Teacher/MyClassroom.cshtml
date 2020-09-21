@@ -2,12 +2,14 @@
     ViewData["Title"] = "MyClassroom";
 }
 
-@model List<Classrooms>  
+@model List<Classrooms>
 
-    <h1>What Classroom do you want to look at?</h1>
-    <ul>
-        @foreach (Classrooms c in Model)
-        {
-            <li><a href="../Teacher/ClassroomView?id=@c.Id">@c.ClassName</a></li>
-        }
-    </ul>
+    <div class="contentDiv">
+        <h1>What Classroom do you want to look at?</h1>
+        <ul>
+            @foreach (Classrooms c in Model)
+            {
+                <li><a href="../Teacher/ClassroomView?id=@c.Id">@c.ClassName</a></li>
+            }
+        </ul>
+    </div>

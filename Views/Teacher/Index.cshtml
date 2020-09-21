@@ -3,9 +3,11 @@
     ViewData["Title"] = "Index";
 }
 
-@foreach (Teachers t in Model)
-{
-    <h1>Welcome @t.FirstName @t.LastName</h1>
-}
-<h1>Use this app to manage your classes.</h1>
+    <div class="contentDiv">
+        @foreach (Teachers t in Model)
+        {
+            <h1>Welcome @t.FirstName @t.LastName</h1>
+        }
+        <h1>Use this app to manage your classes.</h1>
 
+    </div>

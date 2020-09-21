@@ -3,21 +3,25 @@
     ViewData["Title"] = "CreateClassroom";
 }
 
-<h1>CreateClassroom</h1>
-@model List<Teachers>
-@*id teacherId classname and classaverage*@
+    <div class="contentDiv">
+        <h1>CreateClassroom</h1>
+        @model List<Teachers>
 
-<form action="../Teacher/CreateClassroom" method="post">
-    <p>Class Name<br />
-    <input type="text" name="ClassName" placeholder="class name" required /></p>
-    
-    <p>Assign Teacher to Class<br />
-        <select name="TeacherId">
-            @foreach (Teachers t in Model)
-            {
-                <option value="@t.Id">@t.FirstName @t.LastName</option>
-            }
-        </select>
-    </p>
-    <input type="submit" />
-</form>
+        <form action="../Teacher/CreateClassroom" method="post">
+            <p>
+                Class Name<br />
+                <input type="text" name="ClassName" placeholder="class name" required />
+            </p>
+
+            <p>
+                Assign Teacher to Class<br />
+                <select name="TeacherId">
+                    @foreach (Teachers t in Model)
+                    {
+                        <option value="@t.Id">@t.FirstName @t.LastName</option>
+                    }
+                </select>
+            </p>
+            <input type="submit" />
+        </form>
+    </div>

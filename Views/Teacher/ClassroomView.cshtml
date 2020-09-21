@@ -3,7 +3,7 @@
     ViewData["Title"] = "ClassroomView";
 }
 
-<h1 class="float-left">Classroom: @Model.ClassName</h1><h1 class="float-right">Class Average: @Model.ClassAvg</h1>
+<h1 class="float-left">Classroom: @Model.ClassName</h1><h1 class="float-right">Class Average: @Model.ClassAvg%</h1>
 
 @if (ViewBag.MyStudents == null)
 {
@@ -11,7 +11,7 @@
 }
 else
 {
-    <table class="table table-bordered">
+    <table class="table-bordered-space table-space">
         <tr>
             <th>Student First Name</th>
             <th>Student Last Name</th>
@@ -30,7 +30,7 @@ else
                 }
                 else
                 {
-                    <td>@s.AverageGrade</td>
+                    <td>@s.AverageGrade%</td>
                 }
             </tr>
             }
