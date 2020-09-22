@@ -8,18 +8,13 @@
 <table class="table-space table-bordered-space">
     <tr>
         <th>User Name</th>
-        <th>User ID</th>
         <th>Role Name</th>
-        <th>Role ID</th>
         <th>Remove User</th>
     </tr>
-
-
     @foreach (AspNetUsers u in Model.users)
     {
         <tr>
             <td>@u.UserName</td>
-            <td>@u.Id</td>
             <td>
                 @foreach (AspNetUserRoles a in Model.userRoles)
                 {
@@ -35,28 +30,7 @@
                     }
                 }
             </td>
-            <td>
-                @foreach (AspNetUserRoles a in Model.userRoles)
-                {
-                    @if (u.Id == a.UserId)
-                    {
-                        @foreach (AspNetRoles r in Model.roles)
-                        {
-                            if (r.Id == a.RoleId)
-                            {
-                                @r.Id <br />
-                            }
-                        }
-                    }
-                }
-            </td>
-
-
-
-
-
-
-            <td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteUser?id=@u.Id">Remove</a></td>
+            @*<td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteUser?id=@u.Id">Remove</a></td>*@
         </tr>
     }
 

@@ -38,13 +38,13 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View(); 
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult CreateRole()
         {
             return View();
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleModel model)
         {
@@ -126,7 +126,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                     await _userManager.RemoveFromRoleAsync(user, role[i]);
                 }
 
-                await _userManager.AddToRoleAsync(user, "admin");
+                await _userManager.AddToRoleAsync(user, "Admin");
 
                 await _signInManager.SignOutAsync();
                 return RedirectToAction("Index", "Administration");
@@ -134,14 +134,14 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return View("index");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles.ToList();
             return View(roles);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRole(EditRoleModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
@@ -180,7 +180,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 return RedirectToAction("AssignAsTeacher");
 
             }
-            else if(password == "5678" && role == "admin")
+            else if(password == "5678" && role == "Admin")
             {
                 return RedirectToAction("AssignAsAdmin");
             }
@@ -205,7 +205,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 return RedirectToAction("AssignARole", new { msg = message}); 
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             PrincipleViewModel principle= new PrincipleViewModel();
@@ -225,7 +225,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
 
             return View(principle);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DisplayStudents()
         {
             PrincipleViewModel principal = new PrincipleViewModel();
@@ -233,7 +233,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principal.classrooms = _context.Classrooms.ToList();
             return View(principal);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DisplayUsers()
         {
             PrincipleViewModel principle = new PrincipleViewModel();
@@ -242,13 +242,13 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.userRoles = _context.AspNetUserRoles.ToList();
             return View(principle);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DisplayTeachers()
         {
             var teacherList = _context.Teachers.ToList();
             return View(teacherList);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DisplayGrades()
         {
             PrincipleViewModel principle = new PrincipleViewModel();
@@ -259,12 +259,12 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.teachers = _context.Teachers.ToList();
             return View(principle);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult HumanResources()
         {
             return View();
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DisplayClassrooms()
         {
             PrincipleViewModel principle = new PrincipleViewModel();
@@ -275,7 +275,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             principle.teachers = _context.Teachers.ToList();
             return View(principle);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteStudent( int id)
         {
             var foundStudent = _context.Students.Find(id);
@@ -286,7 +286,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return RedirectToAction("Index");
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteTeacher(int id)
         {
             var foundTeacher = _context.Teachers.Find(id);
@@ -297,7 +297,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             }
             return RedirectToAction("Index");
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(string id)
         {
             var foundUser = _context.AspNetUsers.Find(id);
@@ -307,9 +307,9 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 _context.AspNetUsers.Remove(foundUser);
                 _context.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("DisplayUsers");
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteClassroom(int id)
         {
             var foundClassroom = _context.Classrooms.Find(id);
@@ -322,7 +322,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             return RedirectToAction("Index");
 
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteGrade(int id)
         {
             var foundGrade = _context.Grades.Find(id);

@@ -56,7 +56,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                     }
                     else if (role[i].ToLower().Contains("admin"))
                     {
-                        return RedirectToAction("index", "Administration");
+                        return RedirectToAction("welcome", "Administration");
                     }
                 }
             }
