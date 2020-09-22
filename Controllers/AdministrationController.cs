@@ -239,11 +239,37 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
         {
             PrincipleViewModel principle = new PrincipleViewModel();
             principle.students = _context.Students.Where(x => x.Id == id).ToList();
-            principle.classrooms = _context.Classrooms.Where(x => x.Id == principle.students[0].ClassroomId).ToList();
-            foreach (Classrooms c in principle.classrooms)
+            
+            principle.grades = _context.Grades.Where(x => x.StudentId == principle.students[0].Id).ToList();
+
+            foreach (Grades g in principle.grades)
             {
-                DeleteStudentsGradesUsers(c.Id);
+                if (g != null)
+                {
+                    _context.Grades.Remove(g);
+                    _context.SaveChanges();
+                }
             }
+            foreach (Students s in principle.students)
+            {
+                if (s != null)
+                {
+                    _context.Students.Remove(s);
+                    _context.SaveChanges();
+                }
+
+                principle.users = _context.AspNetUsers.Where(x => x.Id == s.UserId).ToList();
+
+                foreach (AspNetUsers a in principle.users)
+                {
+                    if (a != null)
+                    {
+                        _context.AspNetUsers.Remove(a);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+     
             return RedirectToAction("DisplayStudents");
         }
         [Authorize(Roles = "Admin")]
