@@ -6,9 +6,27 @@
     <div class="contentDiv">
         <h1>All Roles</h1><br />
 
-        @foreach (var r in Model)
+        @*@foreach (var r in Model)
         {
             <a href="../Administration/DeleteRole?id=@r.Id" class="btn btn-primary btn-sm">Delete role</a> @r.Name
             <br /><br />
+        }*@
+        @foreach (var r in Model)
+        {
+            if (r.Name == "Admin")
+            {
+                <a>@r.Name</a>
+                <br /><br />
+            }
+            else if (r.Name == "Teacher")
+            {
+                <a>@r.Name</a>
+                <br /><br />
+            }
+            else if (r.Name == "Student")
+            {
+                <a>@r.Name</a>
+                <br /><br />
+            }
         }
     </div>

@@ -12,8 +12,6 @@
         <th>Role Name</th>
         <th>Name</th>
     </tr>
-
-
     @foreach (AspNetUsers u in Model.users)
     {
         <tr>
@@ -27,7 +25,7 @@
                         {
                             if (r.Id == a.RoleId)
                             {
-                <p> @r.Name </p>
+                                <p> @r.Name </p>
                             }
                         }
                     }
@@ -39,7 +37,7 @@
                     @if (u.Id == s.UserId)
                     {
 
-                        <p>@s.FirstName @s.LastName</p> 
+                        <p>@s.FirstName @s.LastName</p>
 
                     }
                 }
@@ -56,7 +54,7 @@
                     {
                         @foreach (AspNetRoles r in Model.roles)
                         {
-                            if (ur.RoleId == r.Id && r.Name == "admin")
+                            if (ur.RoleId == r.Id && r.Name == "Admin")
                             {
                                 <p>Principle</p>
                             }
@@ -64,7 +62,7 @@
                     }
                 }
             </td>
+            @*<td><a class="btn btn-primary btn-sm regularText" href="../Administration/DeleteUser?id=@u.Id">Remove</a></td>*@
         </tr>
     }
-
 </table>
