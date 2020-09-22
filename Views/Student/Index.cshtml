@@ -18,17 +18,32 @@
     </header>
     <br />
     <p class="regularText">
-        Welcome to the team cadet! Time to get rolling.
-        <br />
-        <br />
         With this app you will learn the basics of our planets and moons in the galaxy in order to be the best cadet you can be! The time to explore is upon us and you need to pass the quizzes to get there. We will keep track of the grades and you will continue to learn. You can navigate through the galaxy with the links below or the tabs up top. Good luck!
-    </p>
-    <br />
-    <a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
-    <br />
-    <a href="../Student/MyGrades">Look at my grades.</a>
-    <br />
-    <a href="../Student/ClassLeaderBoard">Take a gander at the LeaderBoard.</a>
-    <br />
-    <a href="../Student/DisplayBodies">Let's Learn Some Stuff.</a>
+        <br />
+        <br />
+        <a href="../Student/ChoseAQuize">Find a Quiz to Take.</a>
+        <br />
+        <a href="../Student/MyGrades">Look at my grades.</a>
+        <br />
+        <a href="../Student/ClassLeaderBoard">Take a gander at the LeaderBoard.</a>
+        <br />
+        <a href="../Student/DisplayBodies">Let's Learn Some Stuff.</a>
+
+        @{
+            List<string> images = new List<string>()
+            {
+                "chick-e1.png",
+                "chick-e2.png",
+                "chick-e3.png",
+                "chick-e4.png",
+                "chick-e5.png",
+            };
+            Random rand = new Random();
+            int num = rand.Next(0, 4);
+        }
+
+        <br /><br />
+        <img src="~/css/studentsimg/@images[num]" alt="Chick-E" class="chick-e" height="35%" width="35%" />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
 </div>

@@ -3,11 +3,28 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="contentDiv">
-    @foreach (Teachers t in Model)
-    {
-        <h1>Welcome @t.FirstName @t.LastName</h1>
-    }
-    <br />
-    <p class="regularText">With this app you will be training some of the brightest minds around. Keep track of who is in your classroom and how they are doing on their quizzes. Keep track of average class and student grades as well as average quiz grade. These cadets are counting on you to steer them to the stars! So get ready to blast off, and good luck. </p>
-</div>
+    <div class="contentDiv">
+        @foreach (Teachers t in Model)
+        {
+            <h1>Welcome @t.FirstName @t.LastName</h1>
+        }
+        <h1>Use this app to manage your classes.</h1>
+
+        <p class="regularText">With this app you will be training some of the brightest minds around. Keep track of who is in your classroom and how they are doing on their quizzes. Keep track of average class and student grades as well as average quiz grade. These cadets are counting on you to steer them to the stars! So get ready to blast off, and good luck. </p>
+
+        @{
+            List<string> images = new List<string>()
+            {
+                "chick-e1.png",
+                "chick-e2.png",
+                "chick-e3.png",
+                "chick-e4.png",
+                "chick-e5.png",
+            };
+            Random rand = new Random();
+            int num = rand.Next(0, 4);
+        }
+        <br /><br />
+        <img src="~/css/teachersimg/@images[num]" alt="Chick-E" class="chick-e" height="35%" width="35%" />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
