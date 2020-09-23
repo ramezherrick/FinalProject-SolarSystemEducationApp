@@ -187,7 +187,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
                 testedPlanet.discoveryDate = "Unknown";
             }
 
-            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massExponent.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), numberOfMoons.ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
+            List<string> correctAnswers = new List<string>() { testedPlanet.mass.massValue.ToString() + "^" + testedPlanet.mass.massExponent.ToString(), testedPlanet.vol.volValue.ToString() + "^" + testedPlanet.vol.volExponent.ToString(), numberOfMoons.ToString(), testedPlanet.discoveredBy.ToString(), testedPlanet.discoveryDate.ToString(), testedPlanet.gravity.ToString() };
             int studentId = students[0].Id;
             //planets quiz
             int quizId = 2;
@@ -491,7 +491,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             {
                 testedMoon.discoveredBy = "Unknown";
             }
-            List<string> correctAnswers = new List<string>() { testedMoon.mass.massExponent.ToString() + "^" + testedMoon.mass.massExponent.ToString(), testedMoon.discoveredBy.ToString(), testedMoon.discoveryDate.ToString(), testedMoon.aroundPlanet.planet.ToString() };
+            List<string> correctAnswers = new List<string>() { testedMoon.mass.massValue.ToString() + "^" + testedMoon.mass.massExponent.ToString(), testedMoon.discoveredBy.ToString(), testedMoon.discoveryDate.ToString(), testedMoon.aroundPlanet.planet.ToString() };
             int studentId = students[0].Id;
             //planets quiz
             int quizId = 3;
