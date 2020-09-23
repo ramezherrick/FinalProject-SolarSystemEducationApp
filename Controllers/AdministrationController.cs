@@ -312,6 +312,7 @@ namespace FinalProject_SolarSystemEducationApp.Controllers
             foreach (Classrooms c in principle.classrooms)
             {
                 DeleteStudentsGradesUsers(c.Id);
+                DeleteClassroom(c.Id);
             }
 
             var foundTeacher = _context.Teachers.Find(id);
