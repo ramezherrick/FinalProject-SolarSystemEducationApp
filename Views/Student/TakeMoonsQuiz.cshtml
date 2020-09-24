@@ -3,74 +3,103 @@
     ViewData["Title"] = "TakeMoonsQuiz";
 }
 
-    <div class="contentDiv">
-        <h1>Moons Quiz: @Model[ViewBag.indexOfMoonToBeTested].englishName</h1>
+@{List<string> Discoverers = new List<string>() { "Stephen Hawking", "Albert Einstein", "Alan Turing", "John Nash", "Allan Turing, John Nash" };}
+<div class="contentDiv">
+    <h1>Moons Quiz: @Model[ViewBag.indexOfMoonToBeTested].englishName</h1>
 
-        @model List<Body>
+    @model List<Body>
 
-        <form action="../Student/TakeMoonsQuiz" method="post">
+    <form action="../Student/TakeMoonsQuiz" method="post">
 
-            @{List<string> keyWords = new List<string>() { "mass", "Who", "When", "orbit" };}
-            @{int count = 0;}
+        @{List<string> keyWords = new List<string>() { "mass", "Who", "When", "orbit" };}
+        @{List<string> mPlanet = new List<string>() { "1 Ceres", "136199 Eris", "Uranus", "Pluto", "Neptune", "Jupiter", "Mars", "Saturn" };}
+        @{int count = 0;}
+        @{int count2 = 0;}
 
-            @foreach (Questionsbank qb in ViewBag.questiosBankList)
+        @foreach (Questionsbank qb in ViewBag.questiosBankList)
+        {
+            if (qb.QuizId == 3)
             {
-                if (qb.QuizId == 3)
-                {
-                    <h2>@qb.Question.Question</h2>
+                <h2>@qb.Question.Question</h2>
 
-                    @foreach (string kw in keyWords)
+                @foreach (string kw in keyWords)
+                {
+                    List<string> options = new List<string>();
+                    if (qb.Question.Question.Contains(kw))
                     {
-                        List<string> options = new List<string>();
-                        if (qb.Question.Question.Contains(kw))
+                        foreach (Body b in Model)
                         {
-                            foreach (Body b in Model)
+                            if (kw == "mass")
                             {
-                                if (kw == "mass")
+                                options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
+                            }
+                            else if (kw == "Who")
+                            {
+                                if (b.discoveredBy == null || b.discoveredBy.Length < 1)
                                 {
-                                    options.Add(b.mass.massValue.ToString() + "^" + b.mass.massExponent.ToString());
+
+                                    options.Add(Discoverers[count2]);
+                                    count2++;
+
                                 }
-                                else if (kw == "Who")
+                                else if (!options.Contains(b.discoveredBy))
                                 {
                                     options.Add(b.discoveredBy.ToString());
                                 }
-                                else if (kw == "When")
+                                else if (options.Contains(b.discoveredBy))
                                 {
-                                    options.Add(b.discoveryDate.ToString());
+                                    options.Add(Discoverers[count2]);
+                                    count2++;
                                 }
-                                else if (kw == "orbit")
+                            }
+                            else if (kw == "When")
+                            {
+                                options.Add(b.discoveryDate.ToString());
+                            }
+                            else if (kw == "orbit")
+                            {
+                                if (!options.Contains(b.aroundPlanet.planet.ToString()))
                                 {
                                     options.Add(b.aroundPlanet.planet.ToString());
                                 }
-                            }
-                        }
-                        if (options.Count > 0)
-                        {
-                            List<string> selections = new List<string>();
-                            Random number = new Random();
-                            for (int i = 0; i < 4; i++)
-                            {
-                                int index = number.Next(0, options.Count);
-                                selections.Add(options[index]);
-                                options.RemoveAt(index);
-                            }
-                            <select name="answers">
-                                @foreach (string s in selections)
+                                else
                                 {
-                                    <option value="@s">@s</option>
+                                    options.Add(mPlanet[count]);
+                                    count++;
                                 }
-                            </select>
-                            <br /><br />
+
+                            }
                         }
+                    }
+                    if (options.Count > 0)
+                    {
+                        List<string> selections = new List<string>();
+                        Random number = new Random();
+                        for (int i = 0; i < 4; i++)
+                        {
+                            int index = number.Next(0, options.Count);
+                            selections.Add(options[index]);
+                            options.RemoveAt(index);
+                        }
+                        <select name="answers">
+                            @foreach (string s in selections)
+                            {
+                                <option value="@s">@s</option>
+                            }
+                        </select>
+                        <br /><br />
                     }
                 }
             }
+            count2 = 0;
+            count = 0;
+        }
 
-            <br />
+        <br />
 
-            @{ViewBag.testedMoon = Model[ViewBag.indexOfMoonToBeTested];}
-            <input type="text" name="englishName" value="@Model[ViewBag.indexOfMoonToBeTested].englishName" hidden />
-            <input type="submit" />
+        @{ViewBag.testedMoon = Model[ViewBag.indexOfMoonToBeTested];}
+        <input type="text" name="englishName" value="@Model[ViewBag.indexOfMoonToBeTested].englishName" hidden />
+        <input type="submit" />
 
-        </form>
-    </div>
+    </form>
+</div>
